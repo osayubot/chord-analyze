@@ -1,0 +1,9 @@
+.container {
+  padding: 10vh 0;
+  width: 100%;
+  background-color: #f7f8fb;
+}
+.container h1 {
+  font-size: 4em;
+  line-height: 2;
+}

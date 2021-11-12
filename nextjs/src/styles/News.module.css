@@ -1,0 +1,29 @@
+.container {
+  min-height: 100vh;
+  padding: 0 10px;
+  width: 100%;
+  display: block;
+}
+.card {
+  margin: 5px;
+  padding: 10px 20px 16px;
+  text-align: left;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: calc(100% - 10px);
+  display: block;
+  background-color: white;
+  line-height: 2;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+.date {
+  color: #444444;
+  margin-top: 20px;
+}
