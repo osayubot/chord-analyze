@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
 import styles from "styles/Analyze.module.scss";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   backgroundColor,
   smallPieOptions,
@@ -17,35 +17,94 @@ import { v4 as uuidv4 } from "uuid";
 import { useWindowDimensions } from "hooks/getWindowSize";
 import artist from "json/artist.json";
 
-export default function ArtistId({
-  image,
-  data,
-  max,
-  network,
-  chordAsc,
-  tensionAsc,
-}) {
+export default function ArtistId({ image, artistData, network }) {
   const { width } = useWindowDimensions();
 
-  const events = {
-    select: function(event: any) {
-      var { nodes, edges } = event;
-      //ここで選択した場合の制御ができる
-      console.log(nodes);
-    },
-  };
+  useEffect(() => {
+    /* 一番使われているテンション */
+    const maxTension = () => {
+      let maxPoint = 0;
+      let max = null;
+      for (let key in artistData.tension) {
+        if (maxPoint < artistData.tension[key]) max = key;
+      }
+      return max;
+    };
 
-  useEffect(() => {}, []);
+    /* 一番使われているコード */
+    const maxChord = () => {
+      let maxPoint = 0;
+      let max = null;
+      for (let key in artistData.chord) {
+        if (maxPoint < artistData.chord[key]) max = key;
+      }
+      return max;
+    };
 
-  const chordKeyArr = Object.keys(data.chord);
-  const tensionKeyArr = Object.keys(data.tension);
+    /* 類似のアーティストを探す */
+
+    let chordAsc = [];
+    let tensionAsc = [];
+    artist.map((item) => {
+      // コードの距離を算出
+      let chordDif = 0;
+      for (let key in item.chord) {
+        const dif = artistData.chord[key] - item.chord[key];
+        chordDif += dif * dif;
+      }
+      // テンションの距離を算出
+      let tensionDif = 0;
+      for (let key in item.tension) {
+        const dif = artistData.tension[key] - item.tension[key];
+        tensionDif += dif * dif;
+      }
+
+      chordAsc.push({
+        ...item,
+        artist: item.artist,
+        chordDif,
+        tensionDif,
+      });
+      tensionAsc.push({
+        ...item,
+        chordDif,
+        tensionDif,
+      });
+    });
+
+    chordAsc.sort(function(a, b) {
+      if (a.chordDif < b.chordDif) return -1;
+      if (a.chordDif > b.chordDif) return 1;
+      return 0;
+    });
+
+    tensionAsc.sort(function(a, b) {
+      if (a.tensionDif < b.tensionDif) return -1;
+      if (a.tensionDif > b.tensionDif) return 1;
+      return 0;
+    });
+
+    setMax({ tension: maxTension(), chord: maxChord() });
+    setChordAsc(chordAsc);
+    setTensionAsc(tensionAsc);
+  }, []);
+
+  const [max, setMax] = useState<{ tension: string; chord: string }>({
+    tension: "",
+    chord: "",
+  });
+  const [chordAsc, setChordAsc] = useState<any>([]);
+  const [tensionAsc, setTensionAsc] = useState<any>([]);
+
+  const chordKeyArr = Object.keys(artistData.chord);
+  const tensionKeyArr = Object.keys(artistData.tension);
 
   let pie = {
     labels: chordKeyArr,
     datasets: [
       {
         data: chordKeyArr.map((key) => {
-          return data.chord[key];
+          return artistData.chord[key];
         }),
         backgroundColor,
         borderWidth: 2,
@@ -58,7 +117,7 @@ export default function ArtistId({
     datasets: [
       {
         data: tensionKeyArr.map((key) => {
-          return data.tension[key];
+          return artistData.tension[key];
         }),
         backgroundColor,
         borderWidth: 2,
@@ -66,61 +125,65 @@ export default function ArtistId({
     ],
   };
 
-  const generateSimilarArtistsPie = JSON.parse(chordAsc)
-    .slice(0, 10)
-    .map((item: any) => {
-      let newPie = {
-        labels: chordKeyArr,
-        datasets: [
-          {
-            data: chordKeyArr.map((key) => {
-              return item.chord[key];
-            }),
-            backgroundColor,
-            borderWidth: 2,
-          },
-        ],
-      };
-      return {
-        id: item.id,
-        song: item.song,
-        artist: item.artist,
-        composer: item.composer,
-        pie: newPie,
-        chordDif: item.chordDif,
-        tensionDif: item.tensionDif,
-      };
-    });
+  const generateSimilarArtistsPie = chordAsc.slice(0, 10).map((item: any) => {
+    let newPie = {
+      labels: chordKeyArr,
+      datasets: [
+        {
+          data: chordKeyArr.map((key) => {
+            return item.chord[key];
+          }),
+          backgroundColor,
+          borderWidth: 2,
+        },
+      ],
+    };
+    return {
+      id: item.id,
+      song: item.song,
+      artist: item.artist,
+      composer: item.composer,
+      pie: newPie,
+      chordDif: item.chordDif,
+      tensionDif: item.tensionDif,
+    };
+  });
 
-  const generateSimilarArtistsBar = JSON.parse(tensionAsc)
-    .slice(0, 10)
-    .map((item: any) => {
-      let newBar = {
-        labels: tensionKeyArr,
-        datasets: [
-          {
-            data: tensionKeyArr.map((key) => {
-              return item.tension[key];
-            }),
-            backgroundColor,
-            borderWidth: 2,
-          },
-        ],
-      };
-      return {
-        id: item.id,
-        song: item.song,
-        artist: item.artist,
-        composer: item.composer,
-        bar: newBar,
-        chordDif: item.chordDif,
-        tensionDif: item.tensionDif,
-      };
-    });
+  const generateSimilarArtistsBar = tensionAsc.slice(0, 10).map((item: any) => {
+    let newBar = {
+      labels: tensionKeyArr,
+      datasets: [
+        {
+          data: tensionKeyArr.map((key) => {
+            return item.tension[key];
+          }),
+          backgroundColor,
+          borderWidth: 2,
+        },
+      ],
+    };
+    return {
+      id: item.id,
+      song: item.song,
+      artist: item.artist,
+      composer: item.composer,
+      bar: newBar,
+      chordDif: item.chordDif,
+      tensionDif: item.tensionDif,
+    };
+  });
+
+  const events = {
+    select: function(event: any) {
+      var { nodes, edges } = event;
+      //ここで選択した場合の制御ができる
+      console.log(nodes);
+    },
+  };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.name}>{data.artist}</h1>
+      <h1 className={styles.name}>{artistData.artist}</h1>
       <p className={styles.detail}>アーティスト</p>
       <div className={styles.thumbnail}>
         <Image src={image} width={600} height={315} className="circle" />
@@ -129,7 +192,7 @@ export default function ArtistId({
         <h4>分析結果</h4>
         <div className={styles.info}>
           <h6>分析楽曲数</h6>
-          <p>{data.data.length}曲</p>
+          <p>{artistData.data.length}曲</p>
           <br />
           <h6>コード進行分析</h6>
 
@@ -147,6 +210,20 @@ export default function ArtistId({
           </p>
         </div>
       </div>
+
+      <h2>{artistData.artist}の歌</h2>
+      <ul>
+        {artistData.data.map((item: any, index: number) => {
+          return (
+            <Link key={index} href={`/analyze/song/${item.id}`}>
+              <a className={styles.songCard}>
+                <h4 className={styles.name}>{item.song}</h4>
+                <p>{item.artist}</p>
+              </a>
+            </Link>
+          );
+        })}
+      </ul>
       <div className={styles.analyze}>
         <h2>コード進行分析</h2>
         <p>このアーティストが曲中で使用しているコード進行の割合を表示します</p>
@@ -186,7 +263,7 @@ export default function ArtistId({
         <ul>
           {generateSimilarArtistsPie.map((item: any, index: number) => {
             return (
-              data.id !== item.id && (
+              artistData.id !== item.id && (
                 <Link key={index} href={`/analyze/artist/${item.id}`}>
                   <a className={styles.card}>
                     <h4 className={styles.name}>{item.artist}</h4>
@@ -205,7 +282,7 @@ export default function ArtistId({
         <ul>
           {generateSimilarArtistsBar.map((item: any, index: number) => {
             return (
-              data.id !== item.id && (
+              artistData.id !== item.id && (
                 <Link key={index} href={`/analyze/artist/${item.id}`}>
                   <a className={styles.card}>
                     <h4 className={styles.name}>{item.artist}</h4>
@@ -226,34 +303,14 @@ export default function ArtistId({
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params.id.toString();
-  const data = artist.find((item) => {
+  const artistData = artist.find((item) => {
     return id === item.id.toString();
   });
-
-  /* 一番使われているテンション */
-  const maxTension = () => {
-    let maxPoint = 0;
-    let max = null;
-    for (let key in data.tension) {
-      if (maxPoint < data.tension[key]) max = key;
-    }
-    return max;
-  };
-
-  /* 一番使われているコード */
-  const maxChord = () => {
-    let maxPoint = 0;
-    let max = null;
-    for (let key in data.chord) {
-      if (maxPoint < data.chord[key]) max = key;
-    }
-    return max;
-  };
 
   /* アーティストの画像を手に入れる */
   let image = "/noimage.png";
 
-  const term = encodeURIComponent(data.artist);
+  const term = encodeURIComponent(artistData.artist);
   const res = await fetch(
     `https://itunes.apple.com/search?term=${term}&media=music&entity=musicArtist&country=jp&lang=ja_jp&limit=1`
   );
@@ -269,56 +326,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     image = cutJsonStr.slice(0, lastIndex + 14);
   }
 
-  /* 類似のアーティストを探す */
-
-  let chordAsc = [];
-  let tensionAsc = [];
-  artist.map((item) => {
-    // コードの距離を算出
-    let chordDif = 0;
-    for (let key in item.chord) {
-      const dif = data.chord[key] - item.chord[key];
-      chordDif += dif * dif;
-    }
-    // テンションの距離を算出
-    let tensionDif = 0;
-    for (let key in item.tension) {
-      const dif = data.tension[key] - item.tension[key];
-      tensionDif += dif * dif;
-    }
-
-    chordAsc.push({
-      ...item,
-      artist: item.artist,
-      chordDif,
-      tensionDif,
-    });
-    tensionAsc.push({
-      ...item,
-      chordDif,
-      tensionDif,
-    });
-  });
-
-  chordAsc.sort(function(a, b) {
-    if (a.chordDif < b.chordDif) return -1;
-    if (a.chordDif > b.chordDif) return 1;
-    return 0;
-  });
-
-  tensionAsc.sort(function(a, b) {
-    if (a.tensionDif < b.tensionDif) return -1;
-    if (a.tensionDif > b.tensionDif) return 1;
-    return 0;
-  });
-
   return {
     props: {
       image,
-      data,
-      max: { tension: maxTension(), chord: maxChord() },
-      chordAsc: JSON.stringify(chordAsc),
-      tensionAsc: JSON.stringify(tensionAsc),
+      artistData,
       network: {
         nodes: [
           {

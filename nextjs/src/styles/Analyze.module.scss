@@ -121,6 +121,17 @@
   display: inline-block;
 }
 
+.songCard {
+  padding: 20px 40px 30px;
+  text-align: center;
+  box-shadow: $box-shadow;
+  border-radius: 10px;
+  background-color: $white;
+  display: inline-block;
+  min-width: 120px;
+  margin-right: 10px;
+}
+
 .analyze {
   line-height: 2;
   padding: 30px 0 10px;
@@ -186,7 +197,6 @@
   padding: 20px 40px 30px;
   text-align: center;
   box-shadow: $box-shadow;
-
   border-radius: 10px;
   background-color: $white;
   display: inline-block;

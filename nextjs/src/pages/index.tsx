@@ -60,7 +60,6 @@ export default function Index() {
       {loading && (
         <div className={styles.loading}>
           <Image src="/loading.svg" width={240} height={240} />
-          <h2>分析中...</h2>
         </div>
       )}
       <div className={styles.image}>
@@ -210,13 +209,7 @@ export default function Index() {
       </div>
 
       <div className={styles.cardContainer}>
-        <h3
-          className={styles.item}
-          onClick={() => {
-            setLoading(true);
-            setTimeout(() => setLoading(false), 10000);
-          }}
-        >
+        <h3 className={styles.item} onClick={() => setLoading(true)}>
           楽曲&nbsp;
           {showSong ? (
             <Image src="/chevron-up.svg" height="32" width="32" />
