@@ -101,7 +101,7 @@
 
 .info h6 {
   display: inline-block;
-  background-color: rgba(0, 128, 255);
+  background-color: $blue;
   color: $white;
   padding: 2px 16px;
   margin-right: 6px;
@@ -196,7 +196,7 @@
 }
 
 .button {
-  background-color: rgb(0, 184, 255);
+  background-color: $lightblue;
   position: relative;
   padding: 4px 20px 6px;
   font-size: 16px;
@@ -215,7 +215,7 @@
     left: 0;
     height: 5px;
     width: 100%;
-    background-color: rgb(0, 128, 255);
+    background-color: $blue;
     border-radius: 0 0 6px 6px;
   }
   cursor: pointer;

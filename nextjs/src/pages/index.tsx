@@ -22,6 +22,7 @@ export default function Index() {
   const [showComposer, setShowComposer] = useState<boolean>(true);
   const [chordProgress, setChordProgress] = useState<string[]>([]);
   const [chordTension, setChordTension] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setSearchSongResult(song);
@@ -56,6 +57,12 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
+      {loading && (
+        <div className={styles.loading}>
+          <Image src="/loading.svg" width={240} height={240} />
+          <h2>分析中...</h2>
+        </div>
+      )}
       <div className={styles.image}>
         <Image src="/music.png" height={120} width={120} layout="fixed" />
       </div>
@@ -145,7 +152,13 @@ export default function Index() {
           searchArtistResult.map((item, index) => {
             return (
               <Link href={`/analyze/artist/${item.id}`} key={index}>
-                <a className={styles.card}>
+                <a
+                  className={styles.card}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => setLoading(false), 100000);
+                  }}
+                >
                   <h2>{item.artist}</h2>
                   <h5>アーティスト</h5>
                 </a>
@@ -176,7 +189,13 @@ export default function Index() {
           searchComposerResult.map((item, index) => {
             return (
               <Link href={`/analyze/composer/${item.id}`} key={index}>
-                <a className={styles.card}>
+                <a
+                  className={styles.card}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => setLoading(false), 10000);
+                  }}
+                >
                   <h2>{item.composer}</h2>
                   <h5>作曲者</h5>
                 </a>
@@ -191,7 +210,13 @@ export default function Index() {
       </div>
 
       <div className={styles.cardContainer}>
-        <h3 className={styles.item} onClick={() => setShowSong(!showSong)}>
+        <h3
+          className={styles.item}
+          onClick={() => {
+            setLoading(true);
+            setTimeout(() => setLoading(false), 10000);
+          }}
+        >
           楽曲&nbsp;
           {showSong ? (
             <Image src="/chevron-up.svg" height="32" width="32" />
@@ -206,7 +231,13 @@ export default function Index() {
               // 　分析が成功しているものはクリック可能
               return (
                 <Link href={`/analyze/song/${item.id}`} key={index}>
-                  <a className={styles.card}>
+                  <a
+                    className={styles.card}
+                    onClick={() => {
+                      setLoading(true);
+                      setTimeout(() => setLoading(false), 10000);
+                    }}
+                  >
                     <h2>{item.song}</h2>
                     <h5>
                       {item.artist} / {item.composer}

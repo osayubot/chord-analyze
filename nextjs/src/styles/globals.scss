@@ -57,7 +57,7 @@ input {
 
 input:focus {
   outline: none;
-  border: 2px solid rgb(0, 184, 255);
+  border: 2px solid $lightblue;
 }
 
 textarea {
@@ -74,7 +74,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border: 2px solid rgb(0, 184, 255);
+  border: 2px solid $lightblue;
 }
 
 header {
@@ -85,14 +85,14 @@ header {
   position: relative;
 }
 
-header h2 {
+header h1 {
   padding: 10px 80px 10px 10px;
 }
 
 .icon {
   position: absolute;
-  top: -4px;
-  right: 10px;
+  top: 0;
+  right: 0;
   cursor: pointer;
   z-index: 300;
 }
@@ -114,7 +114,7 @@ header h2 {
   padding: 60px 20px;
   top: 0;
   right: -330px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: $menu-shadow;
 }
 
 .menu a {
@@ -134,7 +134,7 @@ header h2 {
 
 .open::before {
   content: "";
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: $shadow;
   width: 3200px;
   height: 100%;
   position: fixed;
