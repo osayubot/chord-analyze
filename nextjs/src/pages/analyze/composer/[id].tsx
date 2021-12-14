@@ -1,4 +1,4 @@
-import styles from "styles/Analyze.module.css";
+import styles from "styles/Analyze.module.scss";
 import Link from "next/link";
 
 export default function ComposerId() {

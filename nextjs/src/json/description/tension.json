@@ -1,0 +1,38 @@
+[
+  {
+    "name": "sus2",
+    "description": "王道進行は、「F,G,Em,Am」で構成されています。特に曲のサビで使用されることが多く、インパクトのあるフレーズに使用すると効果的です。"
+  },
+  {
+    "name": "sus4",
+    "description": "丸の内進行は「Fm7,E7,Am7,C7」で構成されています。椎名林檎の楽曲「丸の内サディスティック」でよく使われるコード進行であり、「Just The Two of Us進行」ともいいます。\n小気味の良いメロディーが若者の間で親しまれている進行です。"
+  },
+  {
+    "name": "dim",
+    "description": "小室進行は「Am,F,G,C」で構成されています。 マイナーコードから始まりメジャーコードで終わる進行です。\n切ないバラード曲での盛り上げる場面、また、疾走感のあるかっこいい楽曲で使用される"
+  },
+  {
+    "name": "_6",
+    "description": "小室マイナー進行は「Am,Dm,G,Am」"
+  },
+  {
+    "name": "ommit",
+    "description": "LetItBe進行は「C,G,Am,F」"
+  },
+  {
+    "name": "aug",
+    "description": "4156進行は「F,C,G,Am」"
+  },
+  {
+    "name": "add9",
+    "description": "1625進行は「C,Am,Dm,G7」"
+  },
+  {
+    "name": "add11",
+    "description": "1645進行は「C,Am7,F,G7」"
+  },
+  {
+    "name": "add13",
+    "description": "1541進行は「C,G,F,C」"
+  }
+]

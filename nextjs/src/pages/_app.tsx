@@ -5,7 +5,7 @@ import Image from "next/image";
 import Head from "next/head";
 import "lib/firebase";
 import "hooks/authentication";
-import "styles/globals.css";
+import "styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -22,10 +22,14 @@ function MyApp({ Component, pageProps }) {
           <link rel="icon" href="/favicon.ico" />
           <meta property="og:url" content="https://chord-vis.vercel.app" />
           <meta property="og:title" content="コード分析の可視化" />
-          <meta property="og:site_name" content="コード分析の可視化" />
+          <meta
+            property="og:site_name"
+            content="コード進行の可視化を用いた楽曲検索・楽曲推薦システムの構築"
+          />
           <meta
             property="og:description"
-            content="あなたの好きな楽曲・アーティストがよく使っているコードはなに？楽曲内容をもとにした、音楽理論に基づく楽曲検索をしよう！"
+            content={`大量の楽曲の分布をコード進行の類似度にもとづいて可視化し、そこからの絞り込みによって楽曲を検索・推薦できるシステムです。
+            \n本システムを使用することで、コード進行が類似した楽曲群などから自分の好みの楽曲を見つけることができ、コード情報から楽曲に関する新たな知見を得ることができます。`}
           />
           <meta property="og:type" content="website" />
           <meta property="og:image" content="/icon.png" />
@@ -36,17 +40,14 @@ function MyApp({ Component, pageProps }) {
           <div className="nav">
             <Link href="/">
               <a>
-                <h2>Chord Analysis Visualization</h2>
-                <p>コード分析の可視化</p>
+                <h2>Chord Vis</h2>
+                <p>
+                  コード進行の可視化を用いた楽曲検索・楽曲推薦システムの構築
+                </p>
               </a>
             </Link>
 
-            <a
-              className="icon"
-              onClick={() => {
-                setMenuOpen(!menuOpen);
-              }}
-            >
+            <a className="icon" onClick={() => setMenuOpen(!menuOpen)}>
               {!menuOpen ? (
                 <Image src="/menu.svg" alt="三" height={72} width={72} />
               ) : (
@@ -57,13 +58,7 @@ function MyApp({ Component, pageProps }) {
             <div className={menuOpen ? "open" : ""}>
               <div className="menu">
                 <Link href="/">
-                  <a
-                    onClick={() => {
-                      setMenuOpen(false);
-                    }}
-                  >
-                    トップへ戻る
-                  </a>
+                  <a onClick={() => setMenuOpen(false)}>トップへ戻る</a>
                 </Link>
                 <Link href="/analyze">
                   <a
@@ -75,13 +70,7 @@ function MyApp({ Component, pageProps }) {
                   </a>
                 </Link>
                 <Link href="/news">
-                  <a
-                    onClick={() => {
-                      setMenuOpen(false);
-                    }}
-                  >
-                    研究の進捗
-                  </a>
+                  <a onClick={() => setMenuOpen(false)}>研究の進捗</a>
                 </Link>
               </div>
             </div>

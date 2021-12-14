@@ -1,10 +1,10 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import styles from "styles/Analyze.module.css";
+import styles from "styles/Analyze.module.scss";
 import { useState } from "react";
 import Link from "next/link";
 import artist from "json/artist.json";
 import song from "json/song.json";
-import chord from "json/typicalChord.json";
+import chord from "json/description/chord.json";
 
 export default function ChodName({ name, artistChordAsc, songChordAsc }) {
   const [type, setType] = useState<string>("楽曲");
@@ -59,8 +59,8 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
                     </div>
 
                     <div className={styles.info}>
-                      <h4>{name}：</h4>
-                      <span>{data.chord[name]} 回</span>
+                      <h4>{name}の出現回数：</h4>
+                      <span>{data.chord[name] * 100} 回</span>
                     </div>
                   </a>
                 </Link>
@@ -77,12 +77,12 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
                     </div>
 
                     <div className={styles.info}>
-                      <h4>{name}：</h4>
+                      <h4>{name}の１曲あたりの平均出現回数：</h4>
                       <span>
                         {Number.isInteger(data.chord[name])
                           ? data.chord[name]
-                          : data.chord[name].toFixed(1)}{" "}
-                        回（１曲あたり）
+                          : data.chord[name]}{" "}
+                        回
                       </span>
                     </div>
                   </a>

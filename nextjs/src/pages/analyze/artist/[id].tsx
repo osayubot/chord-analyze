@@ -2,7 +2,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { GetServerSideProps } from "next";
-import styles from "styles/Analyze.module.css";
+import styles from "styles/Analyze.module.scss";
 import React, { useEffect } from "react";
 import {
   backgroundColor,

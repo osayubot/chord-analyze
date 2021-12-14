@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "styles/News.module.css";
+import styles from "styles/News.module.scss";
 import { client } from "lib/microcms";
 
 export default function News({ blog }) {
@@ -27,7 +27,7 @@ export default function News({ blog }) {
 }
 
 export const getStaticProps = async () => {
-  const data = await client.get({ endpoint: "chord-vis" });
+  const data = await client.get({ endpoint: "chord-vis-news" });
 
   return {
     props: {

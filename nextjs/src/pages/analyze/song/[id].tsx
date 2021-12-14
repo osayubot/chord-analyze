@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import styles from "styles/Analyze.module.css";
+import styles from "styles/Analyze.module.scss";
 import { Pie, Bar } from "react-chartjs-2";
 import { useWindowDimensions } from "hooks/getWindowSize";
 import { GetServerSideProps } from "next";

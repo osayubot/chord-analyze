@@ -1,9 +1,10 @@
 import { GetStaticProps, GetStaticPaths } from "next";
-import styles from "styles/Analyze.module.css";
+import styles from "styles/Analyze.module.scss";
 import { useState } from "react";
 import Link from "next/link";
 import artist from "json/artist.json";
 import song from "json/song.json";
+import tension from "json/description/tension.json";
 
 export default function TensionName({
   name,
@@ -12,12 +13,14 @@ export default function TensionName({
 }) {
   const [type, setType] = useState<string>("楽曲");
 
+  const desctiption = tension.find((item) => item.name === name).description;
+
   return (
     <div className={styles.container}>
       <h1 className={styles.name}>{name}</h1>
       <br />
       <div className={styles.content}>
-        <p>{name}は　。。。（一部分析できていないテンションあり）</p>
+        <p>{desctiption}</p>
       </div>
 
       <div className={styles.analyze}>
@@ -61,7 +64,7 @@ export default function TensionName({
                     </div>
 
                     <div className={styles.info}>
-                      <h4>{name}：</h4>
+                      <h4>{name}の出現回数：</h4>
                       <span>{data.tension[name]} 回</span>
                     </div>
                   </a>
@@ -78,9 +81,14 @@ export default function TensionName({
                       <p>{data.artist}</p>
                     </div>
                     <div className={styles.info}>
-                      <h4>{name}：</h4>
-                      <span>{data.chord[name]} 回（１曲あたり）</span>
-                    </div>{" "}
+                      <h4>{name}の１曲あたりの平均出現回数：</h4>
+                      <span>
+                        {Number.isInteger(data.tension[name])
+                          ? data.tension[name]
+                          : data.tension[name].toFixed(3)}{" "}
+                        回
+                      </span>
+                    </div>
                   </a>
                 </Link>
               );

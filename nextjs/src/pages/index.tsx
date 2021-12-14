@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import styles from "styles/Index.module.css";
+import styles from "styles/Index.module.scss";
 import song from "json/song.json";
 import artist from "json/artist.json";
 import composer from "json/composer.json";
@@ -14,9 +14,9 @@ export default function Index() {
   const [searchArtistResult, setSearchArtistResult] = useState([]);
   const [searchComposerResult, setSearchComposerResult] = useState([]);
   const [value, setValue] = useState<string>("");
-  const [guide, setGuide] = useState<string>("");
-  const [showChord, setShowChord] = useState<boolean>(true);
-  const [showTension, setShowTension] = useState<boolean>(true);
+  const [guide, setGuide] = useState<string>("検索しよう");
+  const [showChord, setShowChord] = useState<boolean>(false);
+  const [showTension, setShowTension] = useState<boolean>(false);
   const [showSong, setShowSong] = useState<boolean>(true);
   const [showArtist, setShowArtist] = useState<boolean>(true);
   const [showComposer, setShowComposer] = useState<boolean>(true);
@@ -32,7 +32,7 @@ export default function Index() {
     setChordTension(chordTension);
   }, [router]);
 
-  const search = () => {
+  const search = (value: string) => {
     const songResult = song.filter((item) => {
       return (
         item.song.indexOf(value) > -1 ||
@@ -51,7 +51,7 @@ export default function Index() {
     setSearchSongResult(songResult);
     setSearchArtistResult(artistResult);
     setSearchComposerResult(composerResult);
-    setGuide(`「${value}」の検索結果`);
+    setGuide(value ? `「${value}」の検索結果` : "　");
   };
 
   return (
@@ -59,7 +59,7 @@ export default function Index() {
       <div className={styles.image}>
         <Image src="/music.png" height={120} width={120} layout="fixed" />
       </div>
-      <div className={styles.card2}>
+      <div className={styles.cardContainer}>
         <h3 className={styles.description}>
           お気に入りの楽曲・アーティストに
           <br />
@@ -72,37 +72,29 @@ export default function Index() {
         </p>
       </div>
 
+      <h2 className={styles.guide}>{guide}</h2>
       <div className={styles.search}>
         <input
           type="text"
+          value={value}
           onChange={(e) => {
-            if (e.target.value) {
-              setValue(e.target.value);
-            }
+            setValue(e.target.value);
+            search(e.target.value);
           }}
         />
-        <a
-          className={styles.button}
-          onClick={() => {
-            search();
-          }}
-        >
-          検索する
-        </a>
       </div>
 
-      <h2 className={styles.guide}>{guide}</h2>
-      <h3 className={styles.item} onClick={() => setShowChord(!showChord)}>
-        コード進行から探す&nbsp;
-        {showChord ? (
-          <Image src="/eye-down.svg" height="32" width="32" />
-        ) : (
-          <Image src="/eye-up.svg" height="32" width="32" />
-        )}
-      </h3>
-      {showChord && (
-        <div className={styles.grid}>
-          {chordProgress.map((item, index) => {
+      <div className={styles.cardContainer}>
+        <h3 className={styles.item} onClick={() => setShowChord(!showChord)}>
+          コード進行から探す&nbsp;
+          {showChord ? (
+            <Image src="/chevron-up.svg" height="32" width="32" />
+          ) : (
+            <Image src="/chevron-down.svg" height="32" width="32" />
+          )}
+        </h3>
+        {showChord &&
+          chordProgress.map((item, index) => {
             return (
               <Link href={`/analyze/chord/${item}`} key={index}>
                 <a className={styles.card}>
@@ -112,20 +104,22 @@ export default function Index() {
               </Link>
             );
           })}
-        </div>
-      )}
+      </div>
 
-      <h3 className={styles.item} onClick={() => setShowTension(!showTension)}>
-        テンションから探す&nbsp;
-        {showTension ? (
-          <Image src="/eye-down.svg" height="32" width="32" />
-        ) : (
-          <Image src="/eye-up.svg" height="32" width="32" />
-        )}
-      </h3>
-      {showTension && (
-        <div className={styles.grid}>
-          {chordTension.map((item, index) => {
+      <div className={styles.cardContainer}>
+        <h3
+          className={styles.item}
+          onClick={() => setShowTension(!showTension)}
+        >
+          テンションから探す&nbsp;
+          {showTension ? (
+            <Image src="/chevron-up.svg" height="32" width="32" />
+          ) : (
+            <Image src="/chevron-down.svg" height="32" width="32" />
+          )}
+        </h3>
+        {showTension &&
+          chordTension.map((item, index) => {
             return (
               <Link href={`/analyze/tension/${item}`} key={index}>
                 <a className={styles.card}>
@@ -135,19 +129,18 @@ export default function Index() {
               </Link>
             );
           })}
-        </div>
-      )}
+      </div>
 
-      <h3 className={styles.item} onClick={() => setShowArtist(!showArtist)}>
-        アーティスト&nbsp;
-        {showArtist ? (
-          <Image src="/eye-down.svg" height="32" width="32" />
-        ) : (
-          <Image src="/eye-up.svg" height="32" width="32" />
-        )}
-      </h3>
+      <div className={styles.cardContainer}>
+        <h3 className={styles.item} onClick={() => setShowArtist(!showArtist)}>
+          アーティスト&nbsp;
+          {showArtist ? (
+            <Image src="/chevron-up.svg" height="32" width="32" />
+          ) : (
+            <Image src="/chevron-down.svg" height="32" width="32" />
+          )}
+        </h3>
 
-      <div className={styles.grid}>
         {showArtist &&
           searchArtistResult.map((item, index) => {
             return (
@@ -160,25 +153,25 @@ export default function Index() {
             );
           })}
         {showArtist && searchArtistResult.length === 0 && (
-          <div className={styles.card2}>
+          <div className={styles.card}>
             <h3>データがありませんでした</h3>
           </div>
         )}
       </div>
 
-      <h3
-        className={styles.item}
-        onClick={() => setShowComposer(!showComposer)}
-      >
-        作曲者&nbsp;
-        {showComposer ? (
-          <Image src="/eye-down.svg" height="32" width="32" />
-        ) : (
-          <Image src="/eye-up.svg" height="32" width="32" />
-        )}
-      </h3>
+      <div className={styles.cardContainer}>
+        <h3
+          className={styles.item}
+          onClick={() => setShowComposer(!showComposer)}
+        >
+          作曲者&nbsp;
+          {showComposer ? (
+            <Image src="/chevron-up.svg" height="32" width="32" />
+          ) : (
+            <Image src="/chevron-down.svg" height="32" width="32" />
+          )}
+        </h3>
 
-      <div className={styles.grid}>
         {showComposer &&
           searchComposerResult.map((item, index) => {
             return (
@@ -191,22 +184,22 @@ export default function Index() {
             );
           })}
         {showComposer && searchComposerResult.length === 0 && (
-          <div className={styles.card2}>
+          <div className={styles.card}>
             <h3>データがありませんでした</h3>
           </div>
         )}
       </div>
 
-      <h3 className={styles.item} onClick={() => setShowSong(!showSong)}>
-        楽曲&nbsp;
-        {showSong ? (
-          <Image src="/eye-down.svg" height="32" width="32" />
-        ) : (
-          <Image src="/eye-up.svg" height="32" width="32" />
-        )}
-      </h3>
+      <div className={styles.cardContainer}>
+        <h3 className={styles.item} onClick={() => setShowSong(!showSong)}>
+          楽曲&nbsp;
+          {showSong ? (
+            <Image src="/chevron-up.svg" height="32" width="32" />
+          ) : (
+            <Image src="/chevron-down.svg" height="32" width="32" />
+          )}
+        </h3>
 
-      <div className={styles.grid}>
         {showSong &&
           searchSongResult.map((item, index) => {
             if (item.result === true) {
@@ -234,7 +227,7 @@ export default function Index() {
             );
           })}
         {showSong && searchSongResult.length === 0 && (
-          <div className={styles.card2}>
+          <div className={styles.card}>
             <h3>データがありませんでした</h3>
           </div>
         )}

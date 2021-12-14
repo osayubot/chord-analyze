@@ -1,7 +1,9 @@
+@import "./variables.scss";
+
 .container {
   padding: 10vh 0;
   width: 100%;
-  background-color: #f7f8fb;
+  background-color: $bg;
 }
 .container h1 {
   font-size: 4em;
