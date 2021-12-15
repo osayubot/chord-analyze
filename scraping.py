@@ -79,7 +79,7 @@ def generateJson(offset,rep,dir_name):
 
     for id in range(offset):
         # 既にファイルが存在する番号は飛ばす
-        if os.path.exists(path_name + str(id + 1) + '.json') == False and id + start > 95237:
+        if os.path.exists(path_name + str(id + 1) + '.json') == False and id + start > 98039:
             load_url = 'https://www.ufret.jp/song.php?data=' + str(id + start)
             output_dict = outputChord(load_url,id + start)
             # スクレイピングの速度を抑える
