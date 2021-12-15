@@ -8,4 +8,6 @@
 
 ## サイト
 
+[chord-vis.com](https://chord-vis.com)
+
 [Vercel](https://chord-vis.vercel.app)
