@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }) {
           <div className="nav">
             <Link href="/">
               <a>
-                <h1>Chord Vis</h1>
+                <h1>chord vis</h1>
                 <p>
                   コード進行の可視化を用いた楽曲検索・楽曲推薦システムの構築
                 </p>
