@@ -32,20 +32,23 @@ export default function analyze(data) {
 
   // Cに転調する
   currentKeys.map((key) => {
-    const chordCdegree = Progression.toRomanNumerals(key, chord);
-    let chordC = Progression.fromRomanNumerals("C", chordCdegree);
+    if (currentKeys !== undefined) {
+      const chordCdegree = Progression.toRomanNumerals(key, chord);
+      let chordC = Progression.fromRomanNumerals("C", chordCdegree);
 
-    // レーベンシュタイン距離を測定する
-    const result = similarityCalc(chordC);
+      // レーベンシュタイン距離を測定する
+      const result = similarityCalc(chordC);
 
-    if (maxTotalPoint < result.totalPoint) {
-      maxTotalPoint = result.totalPoint;
-      analyzeResult = result;
-      currentKey = key;
+      if (maxTotalPoint < result.totalPoint) {
+        maxTotalPoint = result.totalPoint;
+        analyzeResult = result;
+        currentKey = key;
+      }
     }
   });
 
   delete analyzeResult.totalPoint;
+  console.log(`${data.id} analyzed.`);
   return {
     id: data.id,
     song: data.song,

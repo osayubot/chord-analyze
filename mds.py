@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import MDS
 import matplotlib.pyplot as plt
 import japanize_matplotlib
+import json
 
 def main():
     
@@ -19,22 +20,18 @@ def main():
 
     # 一列目から曲名を表すラベルの配列を取得
     labels = np.genfromtxt("data_mds/song.csv",delimiter=",",usecols=0,dtype=str)
+    result = []
 
     plt.scatter(pos[:, 0], pos[:, 1], marker = 'o')
 
     for label, x, y in zip(labels, pos[:, 0], pos[:, 1]):
-        plt.annotate(
-            label,
-            xy = (x, y), xytext = (40, -20),
-            textcoords = 'offset points', ha = 'right', va = 'bottom',
-            arrowprops = dict(arrowstyle = '->', connectionstyle = 'arc3,rad=0')
-        )
+        result.append({"label": label,"data": [{"x":x ,"y":y}]})
+
+    with open('nextjs/src/json/mds.json', 'w') as f:
+        json.dump(result, f, ensure_ascii=False)
 
     plt.show()
 
-    fig = plt.figure()
-    fig.savefig("img.png")
-   
    
 if __name__ == "__main__":
     main()

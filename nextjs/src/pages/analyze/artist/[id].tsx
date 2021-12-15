@@ -12,8 +12,6 @@ import {
   barOptions,
 } from "lib/vis";
 import { Pie, Bar } from "react-chartjs-2";
-import Graph from "react-graph-vis";
-import { v4 as uuidv4 } from "uuid";
 import { useWindowDimensions } from "hooks/getWindowSize";
 import artist from "json/artist.json";
 
@@ -173,14 +171,6 @@ export default function ArtistId({ image, artistData, network }) {
     };
   });
 
-  const events = {
-    select: function(event: any) {
-      var { nodes, edges } = event;
-      //ここで選択した場合の制御ができる
-      console.log(nodes);
-    },
-  };
-
   return (
     <div className={styles.container}>
       <h1 className={styles.name}>{artistData.artist}</h1>
@@ -247,7 +237,17 @@ export default function ArtistId({ image, artistData, network }) {
         </div>
       </div>
 
-      {/*<div className={styles.analyze}>
+      {/*
+      import Graph from "react-graph-vis";
+      import { v4 as uuidv4 } from "uuid";
+      const events = {
+        select: function(event: any) {
+        var { nodes, edges } = event;
+        //ここで選択した場合の制御ができる
+        console.log(nodes);
+        },
+      };
+      <div className={styles.analyze}>
         <h2>テンション可視化</h2>
       </div>
       <div className={styles.graph}>
@@ -256,8 +256,7 @@ export default function ArtistId({ image, artistData, network }) {
           graph={network}
           options={networkOptions(width)}
           events={events}
-        />
-            </div>+*/}
+        /></div>*/}
       <div className={styles.footer}>
         <h3>コード進行が似ているアーティスト</h3>
         <ul>

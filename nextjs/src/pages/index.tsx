@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import styles from "styles/Index.module.scss";
+import { Bubble } from "react-chartjs-2";
+import mds from "json/mds.json";
 import song from "json/song.json";
 import artist from "json/artist.json";
 import composer from "json/composer.json";
@@ -24,6 +26,14 @@ export default function Index() {
   const [chordTension, setChordTension] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [datasets, setDatasets] = useState<
+    {
+      label: string;
+      data: { x: number; y: number }[];
+      backgroundColor: string;
+    }[]
+  >([]);
+
   useEffect(() => {
     setSearchSongResult(song);
     setSearchArtistResult(artist);
@@ -31,7 +41,18 @@ export default function Index() {
     setChordProgress(chordProgress);
     const chordTension = Object.keys(song[0].tension);
     setChordTension(chordTension);
+
+    const colorDatasets = mds.map((item) => {
+      return {
+        label: item.label,
+        data: item.data,
+        backgroundColor: "rgba(53, 162, 235, 1)",
+      };
+    });
+    setDatasets(colorDatasets);
   }, [router]);
+
+  useEffect(() => {}, []);
 
   const search = (value: string) => {
     const songResult = song.filter((item) => {
@@ -55,6 +76,10 @@ export default function Index() {
     setGuide(value ? `「${value}」の検索結果` : "　");
   };
 
+  const bubble = {
+    datasets: datasets,
+  };
+
   return (
     <div className={styles.container}>
       {loading && (
@@ -62,6 +87,14 @@ export default function Index() {
           <Image src="/loading.svg" width={240} height={240} />
         </div>
       )}
+
+      <div className={styles.cardContainer}>
+        <Bubble
+          data={bubble}
+          options={{ plugins: { legend: { display: false } } }}
+        />
+      </div>
+
       <div className={styles.image}>
         <Image src="/music.png" height={120} width={120} layout="fixed" />
       </div>
@@ -209,7 +242,7 @@ export default function Index() {
       </div>
 
       <div className={styles.cardContainer}>
-        <h3 className={styles.item} onClick={() => setLoading(true)}>
+        <h3 className={styles.item} onClick={() => setShowSong(!showSong)}>
           楽曲&nbsp;
           {showSong ? (
             <Image src="/chevron-up.svg" height="32" width="32" />

@@ -53,6 +53,7 @@ input {
   display: inline-block;
   width: 100%;
   border: 2px solid $border;
+  box-shadow: none;
 }
 
 input:focus {
@@ -70,6 +71,7 @@ textarea {
   min-height: 180px;
   border: 2px solid $border;
   margin-bottom: 10px;
+  box-shadow: none;
 }
 
 textarea:focus {

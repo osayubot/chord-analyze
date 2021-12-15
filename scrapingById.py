@@ -7,9 +7,14 @@ import time
 # 1個ずつファイルに出力するパターン
 
 # 取り出すid
-chord_id = 101
-# ディレクトリの名前
-dir_name = 'data/chord101_200/json'
+chord_id = 53515
+
+# directory のなまえ
+reminder = chord_id - (chord_id % 100)
+path_name = "data_raw/chord" + str(reminder + 1) + "_" + str(reminder + 100) + "/json"
+
+
+
 
 # 引数url,結果出力
 def outputChord(url,page_id):
@@ -26,53 +31,52 @@ def outputChord(url,page_id):
     for item_html in array_html:
          # 変数名を検索する
          if item_html.find('var ufret_chord_datas =') >= 0:
-             # 変数を見つけた
              # 変数名の部分を削除する
-             item_html = item_html[35:]
-             chord_length = len(item_html)
+             chord_html = item_html[35:]
+             chord_length = len(chord_html)
              # 後ろの'"]'を削除する
-             item_html = item_html[:chord_length-1]
-
+             chord_html = chord_html[:chord_length-1]
              # \\や/を削除する
-             item_html = re.sub(r'\\/', '],[', item_html)
-
+             chord_html = re.sub(r'\\/', '],[', chord_html)
              # u266dを♭に変換
-             item_html = re.sub(r'\\u266d', '♭', item_html)
-
+             chord_html = re.sub(r'\\u266d', '♭', chord_html)
              # [[を[に変換
-             html_formatting = re.sub(r'\[\[', '[', item_html)
-
+             html_formatting = re.sub(r'\[\[', '[', chord_html)
              # []で囲まれたコード部分を表示
              pattern = r'\[(.+?)\]'
-             chord_array = re.findall(pattern, html_formatting)
-                        
+             chord_array = re.findall(pattern, html_formatting)                   
              chord = chord_array
 
-
-    for item_html in array_html:
          # 歌名
          if item_html.find('var song_name   = ') >= 0:
+             song_html = item_html
              pattern = r'\'(.+?)\''
-             song_name = re.findall(pattern, item_html)
-             song = song_name[0]
+             song_html = song_html.replace("\\'", "’")
+             song_name = re.findall(pattern, song_html)
+             if song_name:
+                song = song_name[0]
 
         # アーティスト名
          if item_html.find('var artist_name = ') >= 0:
+            artist_html = item_html        
             pattern = r'\'(.+?)\''
-            artist_name = re.findall(pattern, item_html)
-            artist = artist_name[0]
+            artist_html = artist_html.replace("\\'", "’")
+            artist_name = re.findall(pattern, artist_html)
+            if artist_name:
+                artist = artist_name[0]
         
         # 作曲者名
          if item_html.find('var music') >= 0:
+            composer_html = item_html
             pattern = r'\'(.+?)\''
-            composer_name = re.findall(pattern, item_html)
-            composer = composer_name[0]
+            composer = composer_html.replace("\\'", "’")
+            composer_name = re.findall(pattern, composer_html)
+            if composer_name:
+                composer = composer_name[0]
     
-    print(page_id)
+    print(page_id) 
 
     return { "id" : page_id, "song" : song, "artist" : artist, "composer" : composer, "chord" : chord }
-
-
 
 
 load_url = 'https://www.ufret.jp/song.php?data=' + str(chord_id)
@@ -84,7 +88,7 @@ if len(output_dict["chord"]) == 0:
 
 output_json = json.dumps(output_dict, ensure_ascii=False)
 data = ''
-f = open(dir_name + str(chord_id)[-2]+ str(chord_id)[-1]  + '.json', 'w')
+f = open(path_name + str(chord_id)[-2] + str(chord_id)[-1]  + '.json', 'w')
 f.write(output_json)
 f.close()
 
