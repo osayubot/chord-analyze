@@ -1,5 +1,8 @@
 module.exports = {
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: [
       "is1-ssl.mzstatic.com",

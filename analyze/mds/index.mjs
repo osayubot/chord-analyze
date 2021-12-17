@@ -6,7 +6,7 @@ export default function generateMdsCSV() {
   console.log("started to generate MDS CSV");
 
   let songs = [];
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 1; i++) {
     const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
       1000}.json`;
     if (fs.existsSync(dirName)) {

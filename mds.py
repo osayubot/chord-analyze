@@ -9,6 +9,7 @@ import json
 def main():
     csv = pd.read_csv("data_mds/song.csv",header = 1, index_col = 0)  
     csv_len = len(csv)
+    print(str(csv_len) + " array MDS")
     
     npdata = np.array(csv.values.flatten())
     A = np.reshape(npdata,(csv_len, csv_len))
@@ -18,7 +19,7 @@ def main():
     pos = mds.fit_transform(A)
 
     # 一列目から曲名を表すラベルの配列を取得
-    labels = np.genfromtxt("data_mds/song.csv",delimiter = ",",usecols = 0,dtype=str)
+    labels = pd.read_csv("data_mds/song.csv",skiprows=lambda x: x not in [0])
     result = []
 
     plt.scatter(pos[:, 0], pos[:, 1], marker = 'o')
