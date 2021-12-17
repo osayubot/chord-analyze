@@ -3,6 +3,8 @@ import * as fs from "fs";
 // nextjs用の分析ファイル
 
 export default function generateNextjsJson() {
+  console.log("started to generate Nextjs JSON.");
+
   let songs = [];
   for (let i = 0; i < 100; i++) {
     const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
@@ -112,5 +114,5 @@ export default function generateNextjsJson() {
   fs.writeFileSync("./data_nextjs/artist.json", artistJSON);
   fs.writeFileSync("./data_nextjs/composer.json", composerJSON);
 
-  console.log("json for nextjs generated!");
+  console.log("Nextjs JSON generated!");
 }

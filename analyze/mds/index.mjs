@@ -3,9 +3,10 @@ import * as fs from "fs";
 // nextjs用の分析ファイル
 
 export default function generateMdsCSV() {
-  let songs = [];
+  console.log("started to generate MDS CSV");
 
-  for (let i = 0; i < 1; i++) {
+  let songs = [];
+  for (let i = 0; i < 100; i++) {
     const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
       1000}.json`;
     if (fs.existsSync(dirName)) {
@@ -19,6 +20,8 @@ export default function generateMdsCSV() {
   const fd = fs.openSync("./data_mds/song.csv", "w");
 
   songs.map((data, index) => {
+    if (index % 100 === 0) console.log(index);
+
     let chordCsvRow = [];
     let tensionCsvRow = [];
 
@@ -48,16 +51,12 @@ export default function generateMdsCSV() {
     });
 
     if (index === 0) {
-      console.log(songs.length);
-      console.log(bomLabel.length);
-      console.log(chordCsvRow.length);
       fs.writeSync(fd, `${bomLabel.join(", ")}\n`);
     }
-
     fs.writeSync(fd, `${chordCsvRow.join(", ")}\n`);
   });
 
   fs.closeSync(fd);
 
-  console.log("csv for mds generated!");
+  console.log("MDS CSV generated!");
 }
