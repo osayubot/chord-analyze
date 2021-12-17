@@ -12,7 +12,6 @@ export default function similarityCalc(chordArr) {
   // レーベンシュタイン距離のポイントを計算
   let result = false;
   let chord = {};
-  let extraChord = Math.floor(chordArr.length / 4); // ４つずつの塊
   let totalPoint = 0;
 
   typicalChordArr.map((typicalChord) => {
@@ -29,21 +28,19 @@ export default function similarityCalc(chordArr) {
         typicalChordStr.split(","), // 配列
         chordArr[i + typicalChordLength + 1]
       );
+
       if (chordType) {
         if (chordType === "一致") {
-          extraChord--;
           point++;
           totalPoint++;
           result = true;
         }
         if (chordType === "代理") {
-          extraChord--;
           point++;
           totalPoint++;
           result = true;
         }
         if (chordType === "派生") {
-          extraChord -= 0.5;
           point += 0.5;
           totalPoint += 0.5;
           result = true;
@@ -51,19 +48,13 @@ export default function similarityCalc(chordArr) {
       }
       i++;
     }
-    chord[typicalChordName] = Math.round(
-      (point / Math.floor(chordArr.length / 4)) * 100
-    );
+    chord[typicalChordName] = point / Math.floor(chordArr.length / 4);
   });
-
-  chord["その他の進行"] = Math.round(
-    (extraChord / Math.floor(chordArr.length / 4)) * 100
-  );
 
   return {
     chord,
     result,
-    totalPoint: (totalPoint / Math.floor(chordArr.length / 4)) * 100,
+    totalPoint: totalPoint / Math.floor(chordArr.length / 4),
   };
 }
 

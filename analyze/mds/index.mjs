@@ -1,22 +1,36 @@
 import * as fs from "fs";
-import Blob from "cross-blob";
 
 // nextjs用の分析ファイル
 
 export default function generateMdsCSV() {
-  //const id = params.id;
+  let songs = [];
 
-  const songs = JSON.parse(fs.readFileSync("./data_analyze/song.json", "utf8"));
-
-  let mdsCsvChordData = "";
-  let mdsCsvTensionData = "";
+  for (let i = 0; i < 1; i++) {
+    const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
+      1000}.json`;
+    if (fs.existsSync(dirName)) {
+      const data = JSON.parse(fs.readFileSync(dirName, "utf8"));
+      songs = songs.concat(data);
+    }
+  }
 
   let bomLabel = [];
-  songs.map((data) => {
-    let chordCsvRow = data.song;
-    let tensionCsvRow = data.song;
-    bomLabel.push(data.song);
+
+  const fd = fs.openSync("./data_mds/song.csv", "w");
+
+  songs.map((data, index) => {
+    let chordCsvRow = [];
+    let tensionCsvRow = [];
+
     songs.map((item) => {
+      if (index === 0) {
+        bomLabel.push(
+          `${item.song.replace(",", " ")} / ${item.artist.replace(
+            ",",
+            " "
+          )} / ${item.composer.replace(",", " ")}`
+        );
+      }
       // コードの距離を算出
       let chordDif = 0;
       for (let key in item.chord) {
@@ -29,14 +43,21 @@ export default function generateMdsCSV() {
         const dif = data.tension[key] - item.tension[key];
         tensionDif += dif * dif;
       }
-      chordCsvRow += `, ${chordDif}`;
-      tensionCsvRow += `, ${tensionDif}`;
+      chordCsvRow.push(chordDif.toFixed(2));
+      tensionCsvRow.push(tensionDif.toFixed(2));
     });
-    mdsCsvChordData += `${chordCsvRow} \n`;
-    mdsCsvTensionData += `${tensionCsvRow} \n`;
+
+    if (index === 0) {
+      console.log(songs.length);
+      console.log(bomLabel.length);
+      console.log(chordCsvRow.length);
+      fs.writeSync(fd, `${bomLabel.join(", ")}\n`);
+    }
+
+    fs.writeSync(fd, `${chordCsvRow.join(", ")}\n`);
   });
 
-  fs.writeFileSync("./data_mds/song.csv", `${bomLabel}\n${mdsCsvChordData}`);
+  fs.closeSync(fd);
 
   console.log("csv for mds generated!");
 }

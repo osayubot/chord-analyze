@@ -1,10 +1,12 @@
 import { Progression } from "@tonaljs/tonal";
-import specifyKey from "./key.mjs";
 import tensionChordCount from "./tension.mjs";
+import calcDistance from "./levanshtein.mjs";
+
+import specifyKey from "./key.mjs";
 import similarityCalc from "./distance.mjs";
 
 export default function analyze(data) {
-  // ライブラリが使える形に整える
+  // ライブラリで使える形に整える
   const chord = data.chord.map((chord) =>
     chord
       .replace("♭", "b")
@@ -23,32 +25,36 @@ export default function analyze(data) {
   // テンションコードを見つける
   const tensionChord = tensionChordCount(chord);
 
-  // 現在のキーを調べる
-  const currentKeys = specifyKey(chord);
-
   let maxTotalPoint = 0;
   let analyzeResult = {};
   let currentKey = "";
 
+  // 現在のキーを調べる
+  // const currentKeys = specifyKey(chord);
+
   // Cに転調する
-  currentKeys.map((key) => {
-    if (currentKeys !== undefined) {
-      const chordCdegree = Progression.toRomanNumerals(key, chord);
-      let chordC = Progression.fromRomanNumerals("C", chordCdegree);
+  //currentKeys.map((key) => {
+  ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"].map(
+    (key) => {
+      if (key) {
+        const chordCdegree = Progression.toRomanNumerals(key, chord);
+        if (chordCdegree) {
+          let chordC = Progression.fromRomanNumerals("C", chordCdegree);
+          // レーベンシュタイン距離を測定する
+          const result = calcDistance(chordC);
 
-      // レーベンシュタイン距離を測定する
-      const result = similarityCalc(chordC);
-
-      if (maxTotalPoint < result.totalPoint) {
-        maxTotalPoint = result.totalPoint;
-        analyzeResult = result;
-        currentKey = key;
+          if (maxTotalPoint < result.totalPoint) {
+            maxTotalPoint = result.totalPoint;
+            analyzeResult = result;
+            currentKey = key;
+          }
+        }
       }
     }
-  });
+  );
 
   delete analyzeResult.totalPoint;
-  console.log(`${data.id} analyzed.`);
+
   return {
     id: data.id,
     song: data.song,

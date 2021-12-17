@@ -3,10 +3,17 @@ import * as fs from "fs";
 // nextjs用の分析ファイル
 
 export default function generateNextjsJson() {
-  const songJson = fs.readFileSync("./data_analyze/song.json", "utf8");
-  const song = JSON.parse(songJson);
+  let songs = [];
+  for (let i = 0; i < 100; i++) {
+    const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
+      1000}.json`;
+    if (fs.existsSync(dirName)) {
+      const data = JSON.parse(fs.readFileSync(dirName, "utf8"));
+      songs = songs.concat(data);
+    }
+  }
 
-  const trueSong /*= song.filter((item) => item.result === true)*/ = song;
+  const trueSong = songs; // = songs.filter((item) => item.result === true)
   const artistObj = {};
   const composerObj = {};
 
@@ -95,6 +102,7 @@ export default function generateNextjsJson() {
 
   const artistJSON = JSON.stringify(artistJsonArr);
   const composerJSON = JSON.stringify(composerJsonArr);
+  const songJson = JSON.stringify(songs);
 
   fs.writeFileSync("./nextjs/src/json/song.json", songJson);
   fs.writeFileSync("./nextjs/src/json/artist.json", artistJSON);
