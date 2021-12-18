@@ -137,7 +137,7 @@ export default function Analyze({ about }) {
           <div className={styles.text}>
             <h3>コメント履歴</h3>
 
-            <p className={styles.code}>荒らしや誹謗中傷は禁止です。</p>
+            <p className={styles.code}>研究の参考にさせていただきます🙇‍♀️</p>
 
             {comment.map((item, index) => {
               return (

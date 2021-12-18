@@ -65,7 +65,7 @@ export default function TensionName({
 
                     <div className={styles.info}>
                       <h4>{name}の出現回数：</h4>
-                      <span>{data.tension[name]} 回</span>
+                      <span>{data.tension[name].toFixed(3)} 回</span>
                     </div>
                   </a>
                 </Link>
@@ -82,12 +82,7 @@ export default function TensionName({
                     </div>
                     <div className={styles.info}>
                       <h4>{name}の１曲あたりの平均出現回数：</h4>
-                      <span>
-                        {Number.isInteger(data.tension[name])
-                          ? data.tension[name]
-                          : data.tension[name].toFixed(3)}{" "}
-                        回
-                      </span>
+                      <span>{data.tension[name].toFixed(3)}回</span>
                     </div>
                   </a>
                 </Link>

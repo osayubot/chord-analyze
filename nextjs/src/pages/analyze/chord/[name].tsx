@@ -60,7 +60,7 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
 
                     <div className={styles.info}>
                       <h4>{name}の出現回数：</h4>
-                      <span>{data.chord[name]} 回</span>
+                      <span>{data.chord[name].toFixed(3)} 回</span>
                     </div>
                   </a>
                 </Link>
@@ -78,12 +78,7 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
 
                     <div className={styles.info}>
                       <h4>{name}の１曲あたりの平均出現回数：</h4>
-                      <span>
-                        {Number.isInteger(data.chord[name])
-                          ? data.chord[name]
-                          : data.chord[name]}{" "}
-                        回
-                      </span>
+                      <span>{data.chord[name].toFixed(3)}回</span>
                     </div>
                   </a>
                 </Link>
