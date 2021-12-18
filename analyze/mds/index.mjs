@@ -28,7 +28,7 @@ export default function generateMdsCSV() {
     songs.map((item) => {
       if (index === 0) {
         bomLabel.push(
-          `${item.song.replace(",", " ")} / ${item.artist.replace(
+          `${item.id}：${item.song.replace(",", " ")} / ${item.artist.replace(
             ",",
             " "
           )} / ${item.composer.replace(",", " ")}`

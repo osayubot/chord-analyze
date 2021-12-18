@@ -99,7 +99,13 @@ export default function generateNextjsJson() {
       chordSum[key] = chordSum[key] / count;
     }
 
-    return { id, composer, tension: tensionSum, chord: chordSum, data: data };
+    return {
+      id,
+      composer,
+      tension: tensionSum,
+      chord: chordSum,
+      data: data,
+    };
   });
 
   const artistJSON = JSON.stringify(artistJsonArr);
@@ -108,7 +114,7 @@ export default function generateNextjsJson() {
 
   fs.writeFileSync("./nextjs/src/json/song.json", songJson);
   fs.writeFileSync("./nextjs/src/json/artist.json", artistJSON);
-  fs.writeFileSync("./nextjs/src/composer.json", composerJSON);
+  fs.writeFileSync("./nextjs/src/json/composer.json", composerJSON);
 
   fs.writeFileSync("./data_nextjs/song.json", songJson);
   fs.writeFileSync("./data_nextjs/artist.json", artistJSON);

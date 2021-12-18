@@ -32,21 +32,23 @@
   position: relative;
   text-align: center;
 
-  &::before {
-    content: "";
-    display: inline-block;
-    width: 36px;
-    height: 36px;
+  .magnify {
     position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-image: url("/search.svg");
-    background-size: contain;
-    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    right: 2px;
+    top: 2px;
+    border-radius: 0 8px 8px 0;
+    background-color: $border;
+    height: calc(100% - 4px);
+    width: 80px;
+    cursor: pointer;
+    opacity: 0.8;
   }
-  input {
-    padding-left: 54px;
+  &:hover {
+    .magnify {
+      opacity: 1;
+    }
   }
 }
 .guide {

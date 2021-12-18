@@ -11,13 +11,18 @@ import {
   barOptions,
 } from "lib/vis";
 import song from "json/song.json";
+import artist from "json/artist.json";
+import composer from "json/composer.json";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function SongId({ image, songData }) {
   const { width } = useWindowDimensions();
 
   const chordKeyArr = Object.keys(songData.chord);
   const tensionKeyArr = Object.keys(songData.tension);
+
+  const router = useRouter();
 
   useEffect(() => {
     /* 一番使われているテンション */
@@ -170,9 +175,32 @@ export default function SongId({ image, songData }) {
   return (
     <div className={styles.container}>
       <h1 className={styles.name}>{songData.song}</h1>
-      <p className={styles.detail}>
-        {songData.artist} / {songData.composer}
-      </p>
+      <div className={styles.detail}>
+        <a
+          className={styles.link}
+          onClick={() => {
+            const result = artist.find((item) => {
+              return item.artist === songData.artist;
+            });
+            if (result) router.push(`/analyze/artist/${result.id}`);
+          }}
+        >
+          {songData.artist}
+        </a>
+        /
+        <a
+          className={styles.link}
+          onClick={() => {
+            const result = composer.find((item) => {
+              return item.composer === songData.composer;
+            });
+
+            if (result) router.push(`/analyze/composer/${result.id}`);
+          }}
+        >
+          {songData.composer}
+        </a>
+      </div>
       <br />
       <Image src={image} width={240} height={240} className="circle" />
       <br />
@@ -206,7 +234,6 @@ export default function SongId({ image, songData }) {
           <Pie data={pie} options={pieOptions(width) as any} />
         </div>
       </div>
-
       <div className={styles.analyze}>
         <h2>テンション分析</h2>
         <p>曲中でのテンション使用回数を表示しています</p>
@@ -216,7 +243,6 @@ export default function SongId({ image, songData }) {
           </div>
         </div>
       </div>
-
       <div className={styles.footer}>
         <h3>コード進行が似ているアーティスト</h3>
         <ul>

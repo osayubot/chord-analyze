@@ -3,56 +3,49 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import styles from "styles/Index.module.scss";
-import { Bubble } from "react-chartjs-2";
+import { Scatter } from "react-chartjs-2";
 import mds from "json/mds.json";
 import song from "json/song.json";
-import artist from "json/artist.json";
-import composer from "json/composer.json";
 
 export default function Index() {
   const router = useRouter();
-
-  const [searchSongResult, setSearchSongResult] = useState([]);
-  const [searchArtistResult, setSearchArtistResult] = useState([]);
-  const [searchComposerResult, setSearchComposerResult] = useState([]);
+  const [searchSongResult, setSearchSongResult] = useState(song);
   const [value, setValue] = useState<string>("");
   const [guide, setGuide] = useState<string>("検索しよう");
+
+  const [hoverSongId, setHoverSongId] = useState<number>();
+
   const [showChord, setShowChord] = useState<boolean>(false);
   const [showTension, setShowTension] = useState<boolean>(false);
   const [showSong, setShowSong] = useState<boolean>(true);
-  const [showArtist, setShowArtist] = useState<boolean>(true);
-  const [showComposer, setShowComposer] = useState<boolean>(true);
   const [chordProgress, setChordProgress] = useState<string[]>([]);
   const [chordTension, setChordTension] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [datasets, setDatasets] = useState<
-    {
+  const defaultDataset = {
+    datasets: [
+      {
+        label: "matched",
+        data: mds,
+        backgroundColor: "rgba(53, 162, 235, 1)",
+      },
+    ],
+  };
+
+  const [datasets, setDatasets] = useState<{
+    datasets: {
       label: string;
-      data: { x: number; y: number }[];
+      data: { x: number; y: number; label: string; id: number }[];
       backgroundColor: string;
-    }[]
-  >([]);
+    }[];
+  }>(defaultDataset);
 
   useEffect(() => {
-    setSearchSongResult(song);
-    setSearchArtistResult(artist);
     const chordProgress = Object.keys(song[0].chord);
     setChordProgress(chordProgress);
     const chordTension = Object.keys(song[0].tension);
     setChordTension(chordTension);
-
-    const colorDatasets = mds.map((item) => {
-      return {
-        label: item.label,
-        data: item.data,
-        backgroundColor: "rgba(53, 162, 235, 1)",
-      };
-    });
-    setDatasets(colorDatasets);
   }, [router]);
-
-  useEffect(() => {}, []);
 
   const search = (value: string) => {
     const songResult = song.filter((item) => {
@@ -62,22 +55,32 @@ export default function Index() {
         item.composer.indexOf(value) > -1
       );
     });
-    const artistResult = artist.filter((item) => {
-      return item.artist.indexOf(value) > -1;
-    });
 
-    const composerResult = composer.filter((item) => {
-      return item.composer.indexOf(value) > -1;
+    const matchedData = [];
+    const notMatchedData = [];
+    mds.map((item) => {
+      if (item.label.indexOf(value) > -1) {
+        return matchedData.push(item);
+      }
+      return notMatchedData.push(item);
     });
 
     setSearchSongResult(songResult);
-    setSearchArtistResult(artistResult);
-    setSearchComposerResult(composerResult);
+    setDatasets({
+      datasets: [
+        {
+          label: "matched",
+          data: matchedData,
+          backgroundColor: "rgba(255, 99, 132, 1)",
+        },
+        {
+          label: "notMatched",
+          data: notMatchedData,
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+        },
+      ],
+    });
     setGuide(value ? `「${value}」の検索結果` : "　");
-  };
-
-  const bubble = {
-    datasets: datasets,
   };
 
   return (
@@ -87,13 +90,6 @@ export default function Index() {
           <Image src="/loading.svg" width={240} height={240} />
         </div>
       )}
-
-      <div className={styles.cardContainer}>
-        <Bubble
-          data={bubble}
-          options={{ plugins: { legend: { display: false } } }}
-        />
-      </div>
 
       <div className={styles.image}>
         <Image src="/music.png" height={120} width={120} layout="fixed" />
@@ -111,16 +107,57 @@ export default function Index() {
         </p>
       </div>
 
+      <div className={styles.cardContainer}>
+        <Scatter
+          data={datasets}
+          options={{
+            elements: {
+              point: { radius: 2 },
+            },
+            onClick: () => {
+              if (hoverSongId) {
+                router.push(`/analyze/song/${hoverSongId}`);
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    if (context.dataset.label !== "notMatched") {
+                      setHoverSongId(context.raw.id);
+                      return context.raw.label ? context.raw.label : "";
+                    }
+                    return "";
+                  },
+                },
+              },
+            },
+            parsing: {
+              label: "label",
+            },
+          }}
+        />
+      </div>
+
       <h2 className={styles.guide}>{guide}</h2>
+
       <div className={styles.search}>
         <input
           type="text"
           value={value}
           onChange={(e) => {
             setValue(e.target.value);
-            search(e.target.value);
           }}
         />
+        <div className={styles.magnify}>
+          <Image
+            src="/search.svg"
+            height="32"
+            width="32"
+            onClick={() => search(value)}
+          />
+        </div>
       </div>
 
       <div className={styles.cardContainer}>
@@ -171,79 +208,8 @@ export default function Index() {
       </div>
 
       <div className={styles.cardContainer}>
-        <h3 className={styles.item} onClick={() => setShowArtist(!showArtist)}>
-          アーティスト&nbsp;
-          {showArtist ? (
-            <Image src="/chevron-up.svg" height="32" width="32" />
-          ) : (
-            <Image src="/chevron-down.svg" height="32" width="32" />
-          )}
-        </h3>
-
-        {showArtist &&
-          searchArtistResult.map((item, index) => {
-            return (
-              <Link href={`/analyze/artist/${item.id}`} key={index}>
-                <a
-                  className={styles.card}
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => setLoading(false), 100000);
-                  }}
-                >
-                  <h2>{item.artist}</h2>
-                  <h5>アーティスト</h5>
-                </a>
-              </Link>
-            );
-          })}
-        {showArtist && searchArtistResult.length === 0 && (
-          <div className={styles.card}>
-            <h3>データがありませんでした</h3>
-          </div>
-        )}
-      </div>
-
-      <div className={styles.cardContainer}>
-        <h3
-          className={styles.item}
-          onClick={() => setShowComposer(!showComposer)}
-        >
-          作曲者&nbsp;
-          {showComposer ? (
-            <Image src="/chevron-up.svg" height="32" width="32" />
-          ) : (
-            <Image src="/chevron-down.svg" height="32" width="32" />
-          )}
-        </h3>
-
-        {showComposer &&
-          searchComposerResult.map((item, index) => {
-            return (
-              <Link href={`/analyze/composer/${item.id}`} key={index}>
-                <a
-                  className={styles.card}
-                  onClick={() => {
-                    setLoading(true);
-                    setTimeout(() => setLoading(false), 10000);
-                  }}
-                >
-                  <h2>{item.composer}</h2>
-                  <h5>作曲者</h5>
-                </a>
-              </Link>
-            );
-          })}
-        {showComposer && searchComposerResult.length === 0 && (
-          <div className={styles.card}>
-            <h3>データがありませんでした</h3>
-          </div>
-        )}
-      </div>
-
-      <div className={styles.cardContainer}>
         <h3 className={styles.item} onClick={() => setShowSong(!showSong)}>
-          楽曲&nbsp;
+          楽曲一覧&nbsp;
           {showSong ? (
             <Image src="/chevron-up.svg" height="32" width="32" />
           ) : (

@@ -34,7 +34,7 @@ import generateMDSCsv from "./analyze/mds/index.mjs";
   console.log(`song${i * 1000 + 1}_${i * 1000 + 1000}.json generated.`);
 }*/
 
-//generateNextjsJson();
-generateMDSCsv();
+generateNextjsJson();
+//generateMDSCsv();
 
 console.log("done!");

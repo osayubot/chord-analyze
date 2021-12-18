@@ -9,9 +9,11 @@ export default function ComposerId() {
           <h1>Sorry</h1>
           <p>現在開発中です</p>
         </div>
-        <Link href="/">
-          <a>トップへ戻る</a>
-        </Link>
+        <div>
+          <Link href="/">
+            <a>トップへ戻る</a>
+          </Link>
+        </div>
       </div>
     </div>
   );
