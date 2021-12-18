@@ -47,6 +47,11 @@ ul::-webkit-scrollbar {
 }
 
 input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: $white;
+  outline: none;
   line-height: 2;
   border-radius: 10px;
   padding: 10px;
@@ -54,7 +59,6 @@ input {
   display: inline-block;
   width: 100%;
   border: 2px solid $border;
-  box-shadow: none;
 }
 
 input:focus {
@@ -63,6 +67,11 @@ input:focus {
 }
 
 textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: $white;
+  outline: none;
   border-radius: 8px;
   line-height: 1.6;
   font-size: 20px;

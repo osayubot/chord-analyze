@@ -85,11 +85,7 @@ export default function Index() {
 
   return (
     <div className={styles.container}>
-      {loading && (
-        <div className={styles.loading}>
-          <Image src="/loading.svg" width={240} height={240} />
-        </div>
-      )}
+      {loading && <div className={styles.loading} />}
 
       <div className={styles.image}>
         <Image src="/music.png" height={120} width={120} layout="fixed" />
