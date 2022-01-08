@@ -95,13 +95,13 @@ export default function TensionName({
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const name = params.name.toString();
 
-  artist.sort(function(a, b) {
+  artist.sort(function (a, b) {
     if (a.tension[name] > b.tension[name]) return -1;
     if (a.tension[name] < b.tension[name]) return 1;
     return 0;
   });
 
-  song.sort(function(a, b) {
+  song.sort(function (a, b) {
     if (a.tension[name] > b.tension[name]) return -1;
     if (a.tension[name] < b.tension[name]) return 1;
     return 0;
@@ -117,7 +117,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const tensionName: string[] = Object.keys(artist[0].tension);
+  const tensionName: string[] = tension.map(({ name }) => name);
   const paths = tensionName.map((name) => `/analyze/tension/${name}`);
   return { paths, fallback: false };
 };

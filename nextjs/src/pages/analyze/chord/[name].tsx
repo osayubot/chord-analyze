@@ -91,13 +91,13 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const name = params.name.toString();
 
-  artist.sort(function(a, b) {
+  artist.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
   });
 
-  song.sort(function(a, b) {
+  song.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
@@ -113,7 +113,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const chordName: string[] = Object.keys(artist[0].chord);
+  const chordName: string[] = chord.map(({ name }) => name);
   const paths = chordName.map((name) => `/analyze/chord/${name}`);
   return { paths, fallback: false };
 };

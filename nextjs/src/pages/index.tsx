@@ -6,6 +6,8 @@ import styles from "styles/Index.module.scss";
 import { Scatter } from "react-chartjs-2";
 import mds from "json/mds.json";
 import song from "json/song.json";
+import chord from "json/description/chord.json";
+import tension from "json/description/tension.json";
 
 export default function Index() {
   const router = useRouter();
@@ -41,9 +43,9 @@ export default function Index() {
   }>(defaultDataset);
 
   useEffect(() => {
-    const chordProgress = Object.keys(song[0].chord);
+    const chordProgress = chord.map(({ name }) => name);
     setChordProgress(chordProgress);
-    const chordTension = Object.keys(song[0].tension);
+    const chordTension = tension.map(({ name }) => name);
     setChordTension(chordTension);
   }, [router]);
 
@@ -58,12 +60,13 @@ export default function Index() {
 
     const matchedData = [];
     const notMatchedData = [];
-    mds.map((item) => {
-      if (item.label.indexOf(value) > -1) {
-        return matchedData.push(item);
+
+    for (let i = 0; i < mds.length - 1; i++) {
+      if (mds[i].label.indexOf(value) > -1) {
+        return matchedData.push(mds[i]);
       }
-      return notMatchedData.push(item);
-    });
+      return notMatchedData.push(mds[i]);
+    }
 
     setSearchSongResult(songResult);
     setDatasets({
@@ -174,12 +177,8 @@ export default function Index() {
         {showChord &&
           chordProgress.map((item, index) => {
             return (
-              <Link
-                href={`/analyze/chord/${item}`}
-                key={index}
-                onClick={() => setLoading(true)}
-              >
-                <a className={styles.card}>
+              <Link href={`/analyze/chord/${item}`} key={index}>
+                <a className={styles.card} onClick={() => setLoading(true)}>
                   <h2>{item}</h2>
                   <h5>ランキングを見る</h5>
                 </a>
