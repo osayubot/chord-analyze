@@ -115,17 +115,16 @@ export default function Index() {
                 router.push(`/analyze/song/${hoverSongId}`);
               }
             },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                callbacks: {
-                  label: (context) => {
-                    if (context.dataset.label !== "notMatched") {
-                      setHoverSongId(context.raw.id);
-                      return context.raw.label ? context.raw.label : "";
-                    }
-                    return "";
-                  },
+            legend: { display: false },
+            tooltips: {
+              callbacks: {
+                label: (tooltipItem, data) => {
+                  const datasetIndex = tooltipItem.datasetIndex;
+                  const index = tooltipItem.index;
+                  var labelObj = data.datasets[datasetIndex].data[index];
+                  // if (context.dataset.label !== "notMatched") {return "";}
+                  setHoverSongId(labelObj.id);
+                  return labelObj?.label ? labelObj.label : "";
                 },
               },
             },
@@ -169,7 +168,11 @@ export default function Index() {
         {showChord &&
           chordProgress.map((item, index) => {
             return (
-              <Link href={`/analyze/chord/${item}`} key={index}>
+              <Link
+                href={`/analyze/chord/${item}`}
+                key={index}
+                onClick={() => setLoading(true)}
+              >
                 <a className={styles.card}>
                   <h2>{item}</h2>
                   <h5>ランキングを見る</h5>
@@ -195,7 +198,7 @@ export default function Index() {
           chordTension.map((item, index) => {
             return (
               <Link href={`/analyze/tension/${item}`} key={index}>
-                <a className={styles.card}>
+                <a className={styles.card} onClick={() => setLoading(true)}>
                   <h2>{item}</h2>
                   <h5>ランキングを見る</h5>
                 </a>

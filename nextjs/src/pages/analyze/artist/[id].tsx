@@ -6,12 +6,14 @@ import styles from "styles/Analyze.module.scss";
 import { useEffect, useState } from "react";
 import {
   backgroundColor,
+  horizonalBarOption,
+  smallHorizonalBarOption,
+  pieOptions,
   smallPieOptions,
   networkOptions,
-  pieOptions,
   barOptions,
 } from "lib/vis";
-import { Pie, Bar } from "react-chartjs-2";
+import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
 import { useWindowDimensions } from "hooks/getWindowSize";
 import artist from "json/artist.json";
 
@@ -70,13 +72,13 @@ export default function ArtistId({ image, artistData, network }) {
       });
     });
 
-    chordAsc.sort(function(a, b) {
+    chordAsc.sort(function (a, b) {
       if (a.chordDif < b.chordDif) return -1;
       if (a.chordDif > b.chordDif) return 1;
       return 0;
     });
 
-    tensionAsc.sort(function(a, b) {
+    tensionAsc.sort(function (a, b) {
       if (a.tensionDif < b.tensionDif) return -1;
       if (a.tensionDif > b.tensionDif) return 1;
       return 0;
@@ -97,7 +99,23 @@ export default function ArtistId({ image, artistData, network }) {
   const chordKeyArr = Object.keys(artistData.chord);
   const tensionKeyArr = Object.keys(artistData.tension);
 
-  let pie = {
+  let total = 0;
+  chordKeyArr.map((key) => {
+    total = total + Number(artistData.chord[key]);
+  });
+
+  const horizontalBar = {
+    datasets: chordKeyArr.map((key, index) => {
+      const number = artistData.chord[key].toFixed(2);
+      return {
+        label: key,
+        data: [((number * 100) / total).toFixed(2)],
+        backgroundColor: backgroundColor[index],
+      };
+    }),
+  };
+
+  const pie = {
     labels: chordKeyArr,
     datasets: [
       {
@@ -124,7 +142,7 @@ export default function ArtistId({ image, artistData, network }) {
   };
 
   const generateSimilarArtistsPie = chordAsc.slice(0, 10).map((item: any) => {
-    let newPie = {
+    const newPie = {
       labels: chordKeyArr,
       datasets: [
         {
@@ -136,12 +154,27 @@ export default function ArtistId({ image, artistData, network }) {
         },
       ],
     };
+    let total = 0;
+    chordKeyArr.map((key) => {
+      total = total + Number(artistData.chord[key]);
+    });
+    const newHorizonalBar = {
+      datasets: chordKeyArr.map((key, index) => {
+        const number = artistData.chord[key].toFixed(2);
+        return {
+          label: key,
+          data: [((number * 100) / total).toFixed(2)],
+          backgroundColor: backgroundColor[index],
+        };
+      }),
+    };
     return {
       id: item.id,
       song: item.song,
       artist: item.artist,
       composer: item.composer,
       pie: newPie,
+      horizontalBar: newHorizonalBar,
       chordDif: item.chordDif,
       tensionDif: item.tensionDif,
     };
@@ -220,7 +253,8 @@ export default function ArtistId({ image, artistData, network }) {
       </div>
       <div className={styles.content}>
         <div className={styles.pie}>
-          <Pie data={pie} options={pieOptions(width) as any} />
+          {/*<Pie data={pie} options={pieOptions(width) as any} />*/}
+          <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
         </div>
       </div>
 
@@ -266,9 +300,13 @@ export default function ArtistId({ image, artistData, network }) {
                 <Link key={index} href={`/analyze/artist/${item.id}`}>
                   <a className={styles.card}>
                     <h4 className={styles.name}>{item.artist}</h4>
-                    <br />
-                    <Pie data={item.pie} options={smallPieOptions} />
-                    <br />
+
+                    <HorizontalBar
+                      data={item.horizontalBar}
+                      options={smallHorizonalBarOption}
+                    />
+                    {/*<Pie data={item.pie} options={smallPieOptions} /><br/>*/}
+
                     <p>dif:{item.chordDif.toFixed(2)}</p>
                   </a>
                 </Link>

@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "styles/Analyze.module.scss";
-import { Pie, Bar } from "react-chartjs-2";
+import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
 import { useWindowDimensions } from "hooks/getWindowSize";
 import { GetServerSideProps } from "next";
 import {
+  horizonalBarOption,
+  smallHorizonalBarOption,
   pieOptions,
   smallPieOptions,
   backgroundColor,
@@ -75,13 +77,13 @@ export default function SongId({ image, songData }) {
       });
     });
 
-    chordAsc.sort(function(a, b) {
+    chordAsc.sort(function (a, b) {
       if (a.chordDif < b.chordDif) return -1;
       if (a.chordDif > b.chordDif) return 1;
       return 0;
     });
 
-    tensionAsc.sort(function(a, b) {
+    tensionAsc.sort(function (a, b) {
       if (a.tensionDif < b.tensionDif) return -1;
       if (a.tensionDif > b.tensionDif) return 1;
       return 0;
@@ -98,12 +100,30 @@ export default function SongId({ image, songData }) {
   const [chordAsc, setChordAsc] = useState<any>([]);
   const [tensionAsc, setTensionAsc] = useState<any>([]);
 
-  let pie = {
+  const [loading, setLoading] = useState<boolean>(false);
+
+  let total = 0;
+  chordKeyArr.map((key) => {
+    total = total + Number(songData.chord[key]);
+  });
+
+  let horizontalBar = {
+    datasets: chordKeyArr.map((key, index) => {
+      const number = Number(songData.chord[key]);
+      return {
+        label: key,
+        data: [((number * 100) / total).toFixed(2)],
+        backgroundColor: backgroundColor[index],
+      };
+    }),
+  };
+
+  const pie = {
     labels: chordKeyArr,
     datasets: [
       {
         data: chordKeyArr.map((key) => {
-          return songData.chord[key];
+          return songData.chord[key].toFixed(2);
         }),
         backgroundColor,
         borderWidth: 2,
@@ -119,23 +139,37 @@ export default function SongId({ image, songData }) {
           return songData.tension[key];
         }),
         backgroundColor,
-        borderWidth: 2,
       },
     ],
   };
 
   const generateSimilarSongsPie = chordAsc.slice(0, 10).map((item: any) => {
-    var newPie = {
+    const newPie = {
       labels: chordKeyArr,
       datasets: [
         {
           data: chordKeyArr.map((key) => {
-            return item.chord[key];
+            return item.chord[key].toFixed(2);
           }),
           backgroundColor,
           borderWidth: 2,
         },
       ],
+    };
+    let total = 0;
+    chordKeyArr.map((key) => {
+      total = total + Number(songData.chord[key]);
+    });
+
+    const newHorizonalBar = {
+      datasets: chordKeyArr.map((key, index) => {
+        const number = songData.chord[key].toFixed(2);
+        return {
+          label: key,
+          data: [((number * 100) / total).toFixed(2)],
+          backgroundColor: backgroundColor[index],
+        };
+      }),
     };
     return {
       id: item.id,
@@ -143,6 +177,7 @@ export default function SongId({ image, songData }) {
       artist: item.artist,
       composer: item.composer,
       pie: newPie,
+      horizontalBar: newHorizonalBar,
       chordDif: item.chordDif,
       tensionDif: item.tensionDif,
     };
@@ -174,11 +209,13 @@ export default function SongId({ image, songData }) {
 
   return (
     <div className={styles.container}>
+      {loading && <div className={styles.loading} />}
       <h1 className={styles.name}>{songData.song}</h1>
       <div className={styles.detail}>
         <a
           className={styles.link}
           onClick={() => {
+            setLoading(true);
             const result = artist.find((item) => {
               return item.artist === songData.artist;
             });
@@ -191,6 +228,7 @@ export default function SongId({ image, songData }) {
         <a
           className={styles.link}
           onClick={() => {
+            setLoading(true);
             const result = composer.find((item) => {
               return item.composer === songData.composer;
             });
@@ -231,7 +269,8 @@ export default function SongId({ image, songData }) {
       </div>
       <div className={styles.content}>
         <div className={styles.pie}>
-          <Pie data={pie} options={pieOptions(width) as any} />
+          {/*<Pie data={pie} options={pieOptions(width)} />*/}
+          <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
         </div>
       </div>
       <div className={styles.analyze}>
@@ -239,7 +278,7 @@ export default function SongId({ image, songData }) {
         <p>曲中でのテンション使用回数を表示しています</p>
         <div className={styles.content}>
           <div className={styles.pie}>
-            <Bar data={bar} options={barOptions as any} />
+            <Bar data={bar} options={barOptions} />
           </div>
         </div>
       </div>
@@ -255,8 +294,12 @@ export default function SongId({ image, songData }) {
                     <p className={styles.type}>
                       {item.artist} / {item.composer}
                     </p>
-                    <Pie data={item.pie} options={smallPieOptions} />
-                    <br />
+                    <HorizontalBar
+                      data={item.horizontalBar}
+                      options={smallHorizonalBarOption}
+                    />
+                    {/*<Pie data={item.pie} options={smallPieOptions} /><br />*/}
+
                     <p>dif:{item.chordDif.toFixed(2)}</p>
                   </a>
                 </Link>
@@ -274,6 +317,7 @@ export default function SongId({ image, songData }) {
                   <a className={styles.card}>
                     <h4 className={styles.name}>{item.song}</h4>
                     <br />
+
                     <Bar data={item.bar} options={barOptions as any} />
                     <p className={styles.type}>
                       {item.artist} / {item.composer}

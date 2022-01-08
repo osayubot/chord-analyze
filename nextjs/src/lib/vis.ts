@@ -19,53 +19,76 @@ export const backgroundColor = [
 ];
 
 export const barOptions = {
-  plugins: {
-    legend: {
-      display: false,
+  legend: {
+    display: false,
+  },
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+          stepSize: 0.25,
+        },
+      },
+    ],
+  },
+};
+
+export const horizonalBarOption = {
+  tooltips: {
+    titleFontSize: 0,
+    bodyFontSize: 8,
+  },
+  legend: {
+    position: "bottom",
+    labels: {
+      boxHeight: 20,
+      boxWidth: 20,
     },
+  },
+  scales: {
+    xAxes: [{ stacked: true }],
+    yAxes: [{ stacked: true, display: false }],
+  },
+  dataset: {
+    barThickness: 300,
+  },
+};
+
+export const smallHorizonalBarOption = {
+  tooltips: { enabled: false },
+  legend: false,
+  scales: {
+    xAxes: [{ stacked: true }],
+    yAxes: [{ stacked: true, display: false }],
+  },
+  dataset: {
+    barThickness: 300,
   },
 };
 
 export const pieOptions = (width: number) => {
   if (width < 480) {
     return {
-      plugins: {
-        legend: {
-          position: "bottom",
-          fullSize: false,
-          labels: {
-            boxHeight: 20,
-            boxWidth: 20,
-          },
-        },
-        tooltip: {
-          enabled: false,
-        },
-      },
+      legend: false,
       aspectRatio: 0.5,
     };
   }
   return {
-    plugins: {
-      legend: {
-        position: "bottom",
-        labels: {
-          boxHeight: 24,
-          boxWidth: 24,
-        },
+    legend: {
+      position: "bottom",
+      labels: {
+        boxHeight: 24,
+        boxWidth: 24,
       },
     },
   };
 };
 
 export const smallPieOptions = {
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
+  legend: false,
+  tooltip: {
+    enabled: false,
   },
 };
 
