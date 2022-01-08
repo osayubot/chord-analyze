@@ -142,7 +142,13 @@ export default function Index() {
           type="text"
           value={value}
           onChange={(e) => {
-            if (e.target.value.length === 0) setSearchSongResult(song);
+            if (e.target.value.length === 0) {
+              setLoading(true);
+              setSearchSongResult(song);
+              setGuide("");
+              setDatasets(defaultDataset);
+              setLoading(false);
+            }
             setValue(e.target.value);
           }}
         />
