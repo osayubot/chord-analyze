@@ -14,12 +14,9 @@ import {
   barOptions,
 } from "lib/vis";
 import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
-import { useWindowDimensions } from "hooks/getWindowSize";
 import artist from "json/artist.json";
 
 export default function ArtistId({ image, artistData, network }) {
-  const { width } = useWindowDimensions();
-
   useEffect(() => {
     /* 一番使われているテンション */
     const maxTension = () => {
@@ -106,7 +103,7 @@ export default function ArtistId({ image, artistData, network }) {
 
   const horizontalBar = {
     datasets: chordKeyArr.map((key, index) => {
-      const number = artistData.chord[key].toFixed(2);
+      const number = Number(artistData.chord[key]);
       return {
         label: key,
         data: [((number * 100) / total).toFixed(2)],
@@ -120,7 +117,7 @@ export default function ArtistId({ image, artistData, network }) {
     datasets: [
       {
         data: chordKeyArr.map((key) => {
-          return artistData.chord[key];
+          return Number(artistData.chord[key]).toFixed(2);
         }),
         backgroundColor,
         borderWidth: 2,
@@ -133,7 +130,7 @@ export default function ArtistId({ image, artistData, network }) {
     datasets: [
       {
         data: tensionKeyArr.map((key) => {
-          return artistData.tension[key];
+          return Number(artistData.tension[key]).toFixed(2);
         }),
         backgroundColor,
         borderWidth: 2,
@@ -154,13 +151,15 @@ export default function ArtistId({ image, artistData, network }) {
         },
       ],
     };
+
     let total = 0;
     chordKeyArr.map((key) => {
       total = total + Number(artistData.chord[key]);
     });
+
     const newHorizonalBar = {
       datasets: chordKeyArr.map((key, index) => {
-        const number = artistData.chord[key].toFixed(2);
+        const number = Number(artistData.chord[key]);
         return {
           label: key,
           data: [((number * 100) / total).toFixed(2)],
@@ -186,7 +185,7 @@ export default function ArtistId({ image, artistData, network }) {
       datasets: [
         {
           data: tensionKeyArr.map((key) => {
-            return item.tension[key];
+            return Number(item.tension[key]).toFixed(2);
           }),
           backgroundColor,
           borderWidth: 2,

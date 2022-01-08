@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "styles/Analyze.module.scss";
 import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
-import { useWindowDimensions } from "hooks/getWindowSize";
 import { GetServerSideProps } from "next";
 import {
   horizonalBarOption,
@@ -19,8 +18,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function SongId({ image, songData }) {
-  const { width } = useWindowDimensions();
-
   const chordKeyArr = Object.keys(songData.chord);
   const tensionKeyArr = Object.keys(songData.tension);
 
@@ -123,7 +120,7 @@ export default function SongId({ image, songData }) {
     datasets: [
       {
         data: chordKeyArr.map((key) => {
-          return songData.chord[key].toFixed(2);
+          return Number(songData.chord[key]).toFixed(2);
         }),
         backgroundColor,
         borderWidth: 2,
@@ -136,7 +133,7 @@ export default function SongId({ image, songData }) {
     datasets: [
       {
         data: tensionKeyArr.map((key) => {
-          return songData.tension[key];
+          return Number(songData.tension[key]).toFixed(2);
         }),
         backgroundColor,
       },
@@ -149,7 +146,7 @@ export default function SongId({ image, songData }) {
       datasets: [
         {
           data: chordKeyArr.map((key) => {
-            return item.chord[key].toFixed(2);
+            return Number(item.chord[key]).toFixed(2);
           }),
           backgroundColor,
           borderWidth: 2,
@@ -163,7 +160,7 @@ export default function SongId({ image, songData }) {
 
     const newHorizonalBar = {
       datasets: chordKeyArr.map((key, index) => {
-        const number = songData.chord[key].toFixed(2);
+        const number = Number(songData.chord[key]);
         return {
           label: key,
           data: [((number * 100) / total).toFixed(2)],
@@ -189,7 +186,7 @@ export default function SongId({ image, songData }) {
       datasets: [
         {
           data: tensionKeyArr.map((key) => {
-            return item.tension[key];
+            return Number(item.tension[key]);
           }),
           backgroundColor,
           borderWidth: 2,

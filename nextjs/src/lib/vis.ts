@@ -37,16 +37,17 @@ export const barOptions = {
 export const horizonalBarOption = {
   tooltips: {
     titleFontSize: 0,
-    bodyFontSize: 10,
+    bodyFontSize: 9,
   },
+  stacked: "100%",
   legend: {
     position: "bottom",
     labels: {
-      padding: 20,
+      padding: 12,
     },
   },
   scales: {
-    xAxes: [{ stacked: true }],
+    xAxes: [{ stacked: true, ticks: { max: 100 } }],
     yAxes: [{ stacked: true, display: false }],
   },
   dataset: {
@@ -56,9 +57,10 @@ export const horizonalBarOption = {
 
 export const smallHorizonalBarOption = {
   tooltips: { enabled: false },
+  stacked: "100%",
   legend: false,
   scales: {
-    xAxes: [{ stacked: true }],
+    xAxes: [{ stacked: true, ticks: { max: 100 } }],
     yAxes: [{ stacked: true, display: false }],
   },
   dataset: {
