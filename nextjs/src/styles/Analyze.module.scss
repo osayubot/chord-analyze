@@ -198,13 +198,6 @@
   max-width: 480px;
 }
 
-@media (max-width: 480px) {
-  .pie {
-    padding: 0;
-    transform: translateY(-10px);
-  }
-}
-
 .graph {
   box-shadow: $box-shadow;
   border-radius: 10px;
@@ -257,9 +250,6 @@
     box-shadow: 0 0 2px 0 $border;
     transform: translateY(1px);
     opacity: 0.9;
-  }
-  @media (min-width: 520px) {
-    max-width: 240px;
   }
 }
 .comment {

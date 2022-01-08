@@ -253,7 +253,7 @@ export default function ArtistId({ image, artistData, network }) {
       </div>
       <div className={styles.content}>
         <div className={styles.pie}>
-          {/*<Pie data={pie} options={pieOptions(width) as any} />*/}
+          {/*<Pie data={pie} options={pieOptions as any} />*/}
           <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
         </div>
       </div>

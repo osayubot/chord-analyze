@@ -37,13 +37,12 @@ export const barOptions = {
 export const horizonalBarOption = {
   tooltips: {
     titleFontSize: 0,
-    bodyFontSize: 8,
+    bodyFontSize: 10,
   },
   legend: {
     position: "bottom",
     labels: {
-      boxHeight: 20,
-      boxWidth: 20,
+      padding: 20,
     },
   },
   scales: {
@@ -67,22 +66,14 @@ export const smallHorizonalBarOption = {
   },
 };
 
-export const pieOptions = (width: number) => {
-  if (width < 480) {
-    return {
-      legend: false,
-      aspectRatio: 0.5,
-    };
-  }
-  return {
-    legend: {
-      position: "bottom",
-      labels: {
-        boxHeight: 24,
-        boxWidth: 24,
-      },
+export const pieOptions = {
+  legend: {
+    position: "bottom",
+    labels: {
+      boxHeight: 24,
+      boxWidth: 24,
     },
-  };
+  },
 };
 
 export const smallPieOptions = {

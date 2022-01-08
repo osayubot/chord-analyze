@@ -269,7 +269,7 @@ export default function SongId({ image, songData }) {
       </div>
       <div className={styles.content}>
         <div className={styles.pie}>
-          {/*<Pie data={pie} options={pieOptions(width)} />*/}
+          {/*<Pie data={pie} options={pieOptions as any} />*/}
           <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
         </div>
       </div>

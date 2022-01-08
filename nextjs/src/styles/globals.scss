@@ -59,11 +59,12 @@ input {
   display: inline-block;
   width: 100%;
   border: 2px solid $border;
+  z-index: 2;
 }
 
 input:focus {
   outline: none;
-  border: 2px solid $lightblue;
+  border: 2px solid rgba(black, 0.8);
 }
 
 textarea {
@@ -86,7 +87,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border: 2px solid $lightblue;
+  border: 2px solid rgba(black, 0.8);
 }
 
 header {

@@ -28,10 +28,9 @@ export default function News({ blog }) {
 
 export const getStaticProps = async () => {
   const data = await client.get({ endpoint: "chord-vis-news" });
-
   return {
     props: {
-      blog: data.contents,
+      blog: [], //data.contents,
     },
   };
 };

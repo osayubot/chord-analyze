@@ -19,6 +19,10 @@ function MyApp({ Component, pageProps }) {
             name="description"
             content="あなたの好きな楽曲・アーティストがよく使っているコードはなに？楽曲内容をもとにした、音楽理論に基づく楽曲検索をしよう！"
           />
+          <meta
+            name="viewport"
+            content="width=769,initial-scale=1,maximum-scale=1.0"
+          />
           <link rel="icon" href="/favicon.ico" />
           <meta property="og:url" content="https://chord-vis.vercel.app" />
           <meta property="og:title" content="コード分析の可視化" />
@@ -69,9 +73,9 @@ function MyApp({ Component, pageProps }) {
                     コード分析の可視化とは
                   </a>
                 </Link>
-                <Link href="/news">
+                {/*<Link href="/news">
                   <a onClick={() => setMenuOpen(false)}>研究の進捗</a>
-                </Link>
+                  </Link>*/}
               </div>
             </div>
           </div>

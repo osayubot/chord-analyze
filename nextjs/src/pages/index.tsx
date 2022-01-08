@@ -28,7 +28,7 @@ export default function Index() {
     datasets: [
       {
         label: "matched",
-        data: mds,
+        data: [...mds],
         backgroundColor: "rgba(53, 162, 235, 1)",
       },
     ],
@@ -61,12 +61,12 @@ export default function Index() {
     const matchedData = [];
     const notMatchedData = [];
 
-    for (let i = 0; i < mds.length - 1; i++) {
-      if (mds[i].label.indexOf(value) > -1) {
-        return matchedData.push(mds[i]);
+    defaultDataset.datasets[0].data.map((item) => {
+      if (item.label.indexOf(value) > -1) {
+        return matchedData.push(item);
       }
-      return notMatchedData.push(mds[i]);
-    }
+      return notMatchedData.push(item);
+    });
 
     setSearchSongResult(songResult);
     setDatasets({
@@ -147,9 +147,7 @@ export default function Index() {
           onChange={(e) => {
             if (e.target.value.length === 0) {
               setLoading(true);
-              setSearchSongResult(song);
               setGuide("");
-              setDatasets(defaultDataset);
               setLoading(false);
             }
             setValue(e.target.value);
