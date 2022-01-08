@@ -33,7 +33,9 @@ export default function ArtistId({ image, artistData, network }) {
       let maxPoint = 0;
       let max = null;
       for (let key in artistData.chord) {
-        if (maxPoint < artistData.chord[key]) max = key;
+        if (key !== "その他の進行") {
+          if (maxPoint < artistData.chord[key]) max = key;
+        }
       }
       return max;
     };
@@ -233,7 +235,7 @@ export default function ArtistId({ image, artistData, network }) {
         </div>
       </div>
 
-      <h2>{artistData.artist}の歌</h2>
+      <h2>{artistData.artist}の楽曲</h2>
       <ul>
         {artistData.data.map((item: any, index: number) => {
           return (
@@ -344,7 +346,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   });
 
   /* アーティストの画像を手に入れる */
-  let image = "/noimage.png";
+  let image = "/noimage1200x630.png";
 
   const term = encodeURIComponent(artistData.artist);
   const res = await fetch(
@@ -353,8 +355,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const json1 = await res.json();
 
-  if (json1.results && json1.results[0].artistLinkUrl) {
-    const json2 = await axios.get(json1.results[0].artistLinkUrl);
+  if (json1.results && json1.results[0]?.artistLinkUrl) {
+    const json2 = await axios.get(json1.results[0]?.artistLinkUrl);
     const jsonStr = JSON.stringify(json2.data);
     const startIndex = jsonStr.indexOf("ssl.mzstatic.com/image");
     const cutJsonStr = jsonStr.slice(startIndex - 12, startIndex + 250);

@@ -42,7 +42,6 @@ export default function analyze(data) {
           let chordC = Progression.fromRomanNumerals("C", chordCdegree);
           // レーベンシュタイン距離を測定する
           const result = calcDistance(chordC);
-
           if (maxTotalPoint < result.totalPoint) {
             maxTotalPoint = result.totalPoint;
             analyzeResult = result;
@@ -60,6 +59,7 @@ export default function analyze(data) {
     song: data.song,
     artist: data.artist,
     composer: data.composer,
+    length: chord.length,
     key: currentKey,
     tension: tensionChord,
     ...analyzeResult,

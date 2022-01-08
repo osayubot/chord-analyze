@@ -3,8 +3,8 @@ import chordAnalyze from "./analyze/chord/index.mjs";
 import generateNextjsJson from "./analyze/nextjs/index.mjs";
 import generateMDSCsv from "./analyze/mds/index.mjs";
 
-//for (let i = 0; i < 100; i++) {
-/*for (let i = 0; i < 10; i++) {
+// 10万曲は　(let i = 0; i < 100; i++)
+for (let i = 0; i < 2; i++) {
   let newAnalyzeData = [];
   for (let n = i * 1000; n < i * 1000 + 1000; n++) {
     // １フォルダ中にあるファイル数
@@ -17,7 +17,6 @@ import generateMDSCsv from "./analyze/mds/index.mjs";
       const data = JSON.parse(fs.readFileSync(dirName, "utf8"));
       // 分析
       const resultData = chordAnalyze(data);
-
       // 配列に追加
       if (resultData.result === true) {
         // result が true のもののみ
@@ -27,12 +26,13 @@ import generateMDSCsv from "./analyze/mds/index.mjs";
     if (n % filesNum === 0) console.log(n);
   }
   // 保存先のディレクトリ
-  const analyzeDir = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
-    1000}.json`;
+  const analyzeDir = `./data_analyze/song${i * 1000 + 1}_${
+    i * 1000 + 1000
+  }.json`;
   // 分析データを保存する
   fs.writeFileSync(analyzeDir, JSON.stringify(newAnalyzeData, null, " "));
   console.log(`song${i * 1000 + 1}_${i * 1000 + 1000}.json generated.`);
-}*/
+}
 
 generateNextjsJson();
 //generateMDSCsv();

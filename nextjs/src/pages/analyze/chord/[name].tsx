@@ -3,10 +3,16 @@ import styles from "styles/Analyze.module.scss";
 import { useState } from "react";
 import Link from "next/link";
 import artist from "json/artist.json";
+import composer from "json/composer.json";
 import song from "json/song.json";
 import chord from "json/description/chord.json";
 
-export default function ChodName({ name, artistChordAsc, songChordAsc }) {
+export default function ChodName({
+  name,
+  artistChordAsc,
+  songChordAsc,
+  composerChordAsc,
+}) {
   const [type, setType] = useState<string>("楽曲");
 
   const desctiption = chord.find((item) => item.name === name).description;
@@ -36,6 +42,15 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
         >
           アーティスト
         </a>
+        {"　"}
+        <a
+          className={styles.button}
+          onClick={() => {
+            setType("作曲者");
+          }}
+        >
+          作曲者
+        </a>
       </div>
 
       <div className={styles.analyze}>
@@ -45,45 +60,65 @@ export default function ChodName({ name, artistChordAsc, songChordAsc }) {
         <h3>トップ１００</h3>
       </div>
 
-      {type === "楽曲"
-        ? JSON.parse(songChordAsc).map((data, index) => {
-            if (index < 100)
-              return (
-                <Link href={`/analyze/song/${data.id}`} key={index}>
-                  <a className={styles.about}>
-                    <div className={styles.info}>
-                      <h6>{index + 1}位</h6>
-                      <p>
-                        {data.song} / {data.artist}
-                      </p>
-                    </div>
+      {type === "楽曲" &&
+        JSON.parse(songChordAsc).map((data, index) => {
+          if (index < 100)
+            return (
+              <Link href={`/analyze/song/${data.id}`} key={index}>
+                <a className={styles.about}>
+                  <div className={styles.info}>
+                    <h6>{index + 1}位</h6>
+                    <p>
+                      {data.song} / {data.artist}
+                    </p>
+                  </div>
 
-                    <div className={styles.info}>
-                      <h4>{name}の出現回数：</h4>
-                      <span>{data.chord[name].toFixed(3)} 回</span>
-                    </div>
-                  </a>
-                </Link>
-              );
-          })
-        : JSON.parse(artistChordAsc).map((data, index) => {
-            if (index < 100)
-              return (
-                <Link href={`/analyze/artist/${data.id}`} key={index}>
-                  <a className={styles.about}>
-                    <div className={styles.info}>
-                      <h6>{index + 1}位</h6>
-                      <p>{data.artist}</p>
-                    </div>
+                  <div className={styles.info}>
+                    <h4>出現：</h4>
+                    <span>{Number(data.chord[name]).toFixed(3)} %</span>
+                  </div>
+                </a>
+              </Link>
+            );
+        })}
+      {type === "アーティスト" &&
+        JSON.parse(artistChordAsc).map((data, index) => {
+          if (index < 100)
+            return (
+              <Link href={`/analyze/artist/${data.id}`} key={index}>
+                <a className={styles.about}>
+                  <div className={styles.info}>
+                    <h6>{index + 1}位</h6>
+                    <p>{data.artist}</p>
+                  </div>
 
-                    <div className={styles.info}>
-                      <h4>{name}の１曲あたりの平均出現回数：</h4>
-                      <span>{data.chord[name].toFixed(3)}回</span>
-                    </div>
-                  </a>
-                </Link>
-              );
-          })}
+                  <div className={styles.info}>
+                    <h4>出現：</h4>
+                    <span>{Number(data.chord[name]).toFixed(3)}%</span>
+                  </div>
+                </a>
+              </Link>
+            );
+        })}
+      {type === "作曲者" &&
+        JSON.parse(composerChordAsc).map((data, index) => {
+          if (index < 100)
+            return (
+              <Link href={`/analyze/composer/${data.id}`} key={index}>
+                <a className={styles.about}>
+                  <div className={styles.info}>
+                    <h6>{index + 1}位</h6>
+                    <p>{data.composer}</p>
+                  </div>
+
+                  <div className={styles.info}>
+                    <h4>出現：</h4>
+                    <span>{Number(data.chord[name]).toFixed(3)}%</span>
+                  </div>
+                </a>
+              </Link>
+            );
+        })}
     </div>
   );
 }
@@ -92,6 +127,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const name = params.name.toString();
 
   artist.sort(function (a, b) {
+    if (a.chord[name] > b.chord[name]) return -1;
+    if (a.chord[name] < b.chord[name]) return 1;
+    return 0;
+  });
+
+  composer.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
@@ -107,6 +148,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       name,
       artistChordAsc: JSON.stringify(artist),
+      composerChordAsc: JSON.stringify(composer),
       songChordAsc: JSON.stringify(song),
     },
   };

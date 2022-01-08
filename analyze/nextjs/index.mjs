@@ -7,8 +7,9 @@ export default function generateNextjsJson() {
 
   let songs = [];
   for (let i = 0; i < 100; i++) {
-    const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
-      1000}.json`;
+    const dirName = `./data_analyze/song${i * 1000 + 1}_${
+      i * 1000 + 1000
+    }.json`;
     if (fs.existsSync(dirName)) {
       const data = JSON.parse(fs.readFileSync(dirName, "utf8"));
       songs = songs.concat(data);
@@ -37,24 +38,23 @@ export default function generateNextjsJson() {
         count++;
         for (let key in item.tension) {
           tensionSum[key]
-            ? (tensionSum[key] = tensionSum[key] + item.tension[key])
-            : (tensionSum[key] = item.tension[key]);
+            ? (tensionSum[key] = tensionSum[key] + Number(item.tension[key]))
+            : (tensionSum[key] = Number(item.tension[key]));
         }
         for (let key in item.chord) {
           chordSum[key]
-            ? (chordSum[key] = chordSum[key] + item.chord[key])
-            : (chordSum[key] = item.chord[key]);
+            ? (chordSum[key] = chordSum[key] + Number(item.chord[key]))
+            : (chordSum[key] = Number(item.chord[key]));
         }
         return item;
       }
     });
 
     for (let key in tensionSum) {
-      tensionSum[key] = tensionSum[key] / count;
+      tensionSum[key] = (tensionSum[key] / count).toFixed(4);
     }
-
     for (let key in chordSum) {
-      chordSum[key] = chordSum[key] / count;
+      chordSum[key] = (chordSum[key] / count).toFixed(4);
     }
 
     return {
@@ -79,24 +79,23 @@ export default function generateNextjsJson() {
         count++;
         for (let key in item.tension) {
           tensionSum[key]
-            ? (tensionSum[key] = tensionSum[key] + item.tension[key])
-            : (tensionSum[key] = item.tension[key]);
+            ? (tensionSum[key] = tensionSum[key] + Number(item.tension[key]))
+            : (tensionSum[key] = Number(item.tension[key]));
         }
         for (let key in item.chord) {
           chordSum[key]
-            ? (chordSum[key] = chordSum[key] + item.chord[key])
-            : (chordSum[key] = item.chord[key]);
+            ? (chordSum[key] = chordSum[key] + Number(item.chord[key]))
+            : (chordSum[key] = Number(item.chord[key]));
         }
         return item;
       }
     });
 
     for (let key in tensionSum) {
-      tensionSum[key] = tensionSum[key] / count;
+      tensionSum[key] = (tensionSum[key] / count).toFixed(4);
     }
-
     for (let key in chordSum) {
-      chordSum[key] = chordSum[key] / count;
+      chordSum[key] = (chordSum[key] / count).toFixed(4);
     }
 
     return {
@@ -108,9 +107,9 @@ export default function generateNextjsJson() {
     };
   });
 
+  const songJson = JSON.stringify(trueSong);
   const artistJSON = JSON.stringify(artistJsonArr);
   const composerJSON = JSON.stringify(composerJsonArr);
-  const songJson = JSON.stringify(songs);
 
   fs.writeFileSync("./nextjs/src/json/song.json", songJson);
   fs.writeFileSync("./nextjs/src/json/artist.json", artistJSON);

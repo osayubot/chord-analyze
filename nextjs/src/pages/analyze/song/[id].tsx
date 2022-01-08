@@ -38,7 +38,9 @@ export default function SongId({ image, songData }) {
       let maxPoint = 0;
       let max = null;
       for (let key in songData.chord) {
-        if (maxPoint < songData.chord[key]) max = key;
+        if (key !== "その他の進行") {
+          if (maxPoint < songData.chord[key]) max = key;
+        }
       }
       return max;
     };
@@ -345,7 +347,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const json = await res.json();
 
   const image = json.results
-    ? json.results[0].artworkUrl100.toString().replace("100x100", "500x500")
+    ? json.results[0]?.artworkUrl100?.toString().replace("100x100", "500x500")
     : "/noimage.png";
 
   return {

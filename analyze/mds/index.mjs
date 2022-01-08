@@ -7,8 +7,9 @@ export default function generateMdsCSV() {
 
   let songs = [];
   for (let i = 0; i < 1; i++) {
-    const dirName = `./data_analyze/song${i * 1000 + 1}_${i * 1000 +
-      1000}.json`;
+    const dirName = `./data_analyze/song${i * 1000 + 1}_${
+      i * 1000 + 1000
+    }.json`;
     if (fs.existsSync(dirName)) {
       const data = JSON.parse(fs.readFileSync(dirName, "utf8"));
       songs = songs.concat(data);

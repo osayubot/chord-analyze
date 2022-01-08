@@ -13,12 +13,13 @@ export default function calcDistance(chordArr) {
   let result = false;
   let chord = {};
   let totalPoint = 0;
+  let extraChord = chordArr.length;
 
   typicalChordArr.map((typicalChord) => {
     const typicalChordName = Object.keys(typicalChord)[0];
     const typicalChordStr = typicalChord[typicalChordName];
     const typicalChordLength = typicalChordStr.split(",").length;
-    const allowDistance = typicalChordLength;
+    const allowDistance = typicalChordLength / 2 + 1;
 
     let i = 0;
     let point = 0;
@@ -28,21 +29,25 @@ export default function calcDistance(chordArr) {
         chordArr.slice(i, i + typicalChordLength).join(","), // 文字列
         typicalChordStr // 文字列
       );
-
       if (distance < allowDistance) {
-        point += allowDistance - distance;
-        totalPoint += allowDistance - distance;
+        point += 1;
+        totalPoint += 1;
+        extraChord--;
         result = true;
+        i += typicalChordLength / 2; // 調節
       }
       i++;
     }
-    chord[typicalChordName] = (point / Math.floor(chordArr.length / 4)).toFixed(
-      5
+    chord[typicalChordName] = Number(
+      ((point * 100) / chordArr.length).toFixed(5)
     );
   });
 
   return {
-    chord,
+    chord: {
+      ...chord,
+      その他の進行: Number(((extraChord * 100) / chordArr.length).toFixed(5)),
+    },
     result,
     totalPoint,
   };

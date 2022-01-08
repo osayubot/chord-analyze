@@ -22,7 +22,7 @@ def main():
     headers = pd.read_csv("data_mds/song.csv",skiprows=lambda x: x not in [0])
     result = []
 
-    plt.scatter(pos[:, 0], pos[:, 1], marker = 'o')
+    #plt.scatter(pos[:, 0], pos[:, 1], marker = 'o')
 
     for header, x, y in zip(headers, pos[:, 0], pos[:, 1]):
         id = header.split('：')[0]
@@ -32,7 +32,7 @@ def main():
     with open('nextjs/src/json/mds.json', 'w') as f:
         json.dump(result, f, ensure_ascii=False)
 
-    plt.show()
+    #plt.show()
 
    
 if __name__ == "__main__":
