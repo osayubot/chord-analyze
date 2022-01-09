@@ -12,7 +12,7 @@ export default function tensionChordCount(orglist) {
     "(♭5)": 0,
     "(♭9)": 0,
     "(♭13)": 0,
-    "aug・(#5)": 0,
+    aug: 0,
     "(#9)": 0,
     "(#11)": 0,
     add9: 0,
@@ -26,8 +26,8 @@ export default function tensionChordCount(orglist) {
     if (chord.indexOf("-5") > -1) tensionChord["(♭5)"] += 1;
     if (chord.indexOf("-9") > -1) tensionChord["(♭9)"] += 1;
     if (chord.indexOf("-13") > -1) tensionChord["(♭13)"] += 1;
-    if (chord.indexOf("aug") > -1) tensionChord["aug・(#5)"] += 1;
-    if (chord.indexOf("+5") > -1) tensionChord["aug・(#5)"] += 1;
+    if (chord.indexOf("aug") > -1) tensionChord["aug"] += 1;
+    if (chord.indexOf("+5") > -1) tensionChord["aug"] += 1;
     if (chord.indexOf("+9") > -1) tensionChord["(#9)"] += 1;
     if (chord.indexOf("+11") > -1) tensionChord["(#11)"] += 1;
     if (chord.indexOf("add9") > -1) tensionChord["add9"] += 1;
