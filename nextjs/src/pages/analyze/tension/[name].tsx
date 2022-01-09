@@ -15,14 +15,19 @@ export default function TensionName({
 }) {
   const [type, setType] = useState<string>("楽曲");
 
-  const desctiption = tension.find((item) => item.name === name).description;
+  const { description, quote } = tension.find((item) => item.name === name);
+
+  const songTension = JSON.parse(songTensionAsc);
+  const artistTension = JSON.parse(artistTensionAsc);
+  const composerTension = JSON.parse(composerTensionAsc);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.name}>{name}</h1>
       <br />
       <div className={styles.content}>
-        <p>{desctiption}</p>
+        <p>{description}</p>
+        <p>引用：{quote}</p>
       </div>
 
       <div className={styles.analyze}>
@@ -62,7 +67,7 @@ export default function TensionName({
       </div>
 
       {type === "楽曲" &&
-        JSON.parse(songTensionAsc).map((data, index) => {
+        songTension.map((data, index) => {
           if (index < 100)
             return (
               <Link href={`/analyze/song/${data.id}`} key={index}>
@@ -73,7 +78,6 @@ export default function TensionName({
                       {data.song} / {data.artist}
                     </p>
                   </div>
-
                   <div className={styles.info}>
                     <h4>出現回数：</h4>
                     <span>{Number(data.tension[name]).toFixed(3)} 回</span>
@@ -82,9 +86,17 @@ export default function TensionName({
               </Link>
             );
         })}
+      {type === "楽曲" && songTension.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
+
       {type === "アーティスト" &&
-        JSON.parse(artistTensionAsc).map((data, index) => {
-          if (index < 100)
+        artistTension.map((data, index) => {
+          if (index < 100 && data.tension[name] > 0)
             return (
               <Link href={`/analyze/artist/${data.id}`} key={index}>
                 <a className={styles.about}>
@@ -100,9 +112,17 @@ export default function TensionName({
               </Link>
             );
         })}
+      {type === "アーティスト" && artistTension.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
+
       {type === "作曲者" &&
-        JSON.parse(composerTensionAsc).map((data, index) => {
-          if (index < 100)
+        composerTension.map((data, index) => {
+          if (index < 100 && data.tension[name] > 0)
             return (
               <Link href={`/analyze/composer/${data.id}`} key={index}>
                 <a className={styles.about}>
@@ -118,6 +138,13 @@ export default function TensionName({
               </Link>
             );
         })}
+      {type === "作曲者" && composerTension.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
     </div>
   );
 }
@@ -125,30 +152,37 @@ export default function TensionName({
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const name = params.name.toString();
 
-  artist.sort(function (a, b) {
-    if (a.tension[name] > b.tension[name]) return -1;
-    if (a.tension[name] < b.tension[name]) return 1;
-    return 0;
-  });
+  let artistTensionAsc = artist.filter((item) => item.tension[name] > 0);
+  let composerTensionAsc = composer.filter((item) => item.tension[name] > 0);
+  let songTensionAsc = song.filter((item) => item.tension[name] > 0);
 
-  composer.sort(function (a, b) {
+  artistTensionAsc.sort(function (a, b) {
     if (a.tension[name] > b.tension[name]) return -1;
     if (a.tension[name] < b.tension[name]) return 1;
     return 0;
   });
+  artistTensionAsc = JSON.stringify(artistTensionAsc);
 
-  song.sort(function (a, b) {
+  composerTensionAsc.sort(function (a, b) {
     if (a.tension[name] > b.tension[name]) return -1;
     if (a.tension[name] < b.tension[name]) return 1;
     return 0;
   });
+  composerTensionAsc = JSON.stringify(composerTensionAsc);
+
+  songTensionAsc.sort(function (a, b) {
+    if (a.tension[name] > b.tension[name]) return -1;
+    if (a.tension[name] < b.tension[name]) return 1;
+    return 0;
+  });
+  songTensionAsc = JSON.stringify(songTensionAsc);
 
   return {
     props: {
       name,
-      artistTensionAsc: JSON.stringify(artist),
-      composerTensionAsc: JSON.stringify(composer),
-      songTensionAsc: JSON.stringify(song),
+      artistTensionAsc,
+      composerTensionAsc,
+      songTensionAsc,
     },
   };
 };

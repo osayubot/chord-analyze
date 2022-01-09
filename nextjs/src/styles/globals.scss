@@ -9,6 +9,7 @@ body {
   scrollbar-width: none;
   overflow-wrap: break-word;
   background-color: $bg;
+  -webkit-text-size-adjust: 100%;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }

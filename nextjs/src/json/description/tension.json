@@ -1,30 +1,56 @@
 [
   {
     "name": "sus2",
-    "description": "王道進行は、「F,G,Em,Am」で構成されています。特に曲のサビで使用されることが多く、インパクトのあるフレーズに使用すると効果的です。"
+    "description": "【サスコード】3度が省略され、長2度に置き換えられた音楽コードです。音の明暗を左右する3度の音がなくなり、メジャーでもマイナーでもない、無機質・神秘的な音に変化します。",
+    "quote": "wikipedia，JunyaWatanabe Official Site"
   },
   {
     "name": "sus4",
-    "description": "丸の内進行は「Fm7,E7,Am7,C7」で構成されています。椎名林檎の楽曲「丸の内サディスティック」でよく使われるコード進行であり、「Just The Two of Us進行」ともいいます。\n小気味の良いメロディーが若者の間で親しまれている進行です。"
+    "description": "【サスコード】3度が省略され、長2度に置き換えられた音楽コードです。音の明暗を左右する3度の音がなくなり、メジャーでもマイナーでもない、無機質・神秘的な音に変化します。",
+    "quote": "wikipedia，JunyaWatanabe Official Site"
   },
   {
     "name": "dim",
-    "description": "小室進行は「Am,F,G,C」で構成されています。 マイナーコードから始まりメジャーコードで終わる進行です。\n切ないバラード曲での盛り上げる場面、また、疾走感のあるかっこいい楽曲で使用される"
+    "description": "【ディミニッシュコード】3和音マイナーコードの5度の音を半音下げた（減5度）音楽コードです。不安定な音が特徴です。（diminish=）",
+    "quote": "N's Music Box，JunyaWatanabe Official Site"
   },
   {
-    "name": "_6",
-    "description": "小室マイナー進行は「Am,Dm,G,Am」"
+    "name": "6",
+    "description": "",
+    "quote": ""
   },
   {
-    "name": "ommit",
-    "description": "LetItBe進行は「C,G,Am,F」"
+    "name": "(♭5)",
+    "description": "",
+    "quote": ""
   },
   {
-    "name": "aug",
-    "description": "4156進行は「F,C,G,Am」"
+    "name": "(♭9)",
+    "description": "",
+    "quote": ""
+  },
+  {
+    "name": "(♭13)",
+    "description": "",
+    "quote": ""
+  },
+  {
+    "name": "aug・(#5)",
+    "description": "【オーギュメントコード】3和音メジャーコードの完全5度の音を半音上げた（増5度）音楽コードです。 ちょっと間の抜けたサウンドが特徴です。（aug=）",
+    "quote": "JunyaWatanabe Official Site"
+  },
+  {
+    "name": "(#9)",
+    "description": "",
+    "quote": ""
+  },
+  {
+    "name": "(#11)",
+    "description": "",
+    "quote": ""
   },
   {
     "name": "add9",
-    "description": "1625進行は「C,Am,Dm,G7」"
+    "description": ""
   }
 ]

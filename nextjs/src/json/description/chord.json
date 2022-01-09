@@ -1,54 +1,67 @@
 [
   {
     "name": "王道進行",
-    "description": "王道進行は、「F,G,Em,Am」で構成されています。特に曲のサビで使用されることが多く、インパクトのあるフレーズに使用すると効果的です。"
+    "description": "王道進行は、「F,G,Em,Am」",
+    "quote": ""
   },
   {
     "name": "丸の内進行",
-    "description": "丸の内進行は「Fm7,E7,Am7,C7」で構成されています。椎名林檎の楽曲「丸の内サディスティック」でよく使われるコード進行であり、「Just The Two of Us進行」ともいいます。\n小気味の良いメロディーが若者の間で親しまれている進行です。"
+    "description": "丸の内進行は「Fm7,E7,Am7,C7」",
+    "quote": ""
   },
   {
     "name": "小室進行",
-    "description": "小室進行は「Am,F,G,C」で構成されています。 マイナーコードから始まりメジャーコードで終わる進行です。\n切ないバラード曲での盛り上げる場面、また、疾走感のあるかっこいい楽曲で使用される"
+    "description": "小室進行は「Am,F,G,C」",
+    "quote": ""
   },
   {
     "name": "小室マイナー進行",
-    "description": "小室マイナー進行は「Am,Dm,G,Am」"
+    "description": "小室マイナー進行は「Am,Dm,G,Am」",
+    "quote": ""
   },
   {
     "name": "LetItBe進行",
-    "description": "LetItBe進行は「C,G,Am,F」"
+    "description": "LetItBe進行は「C,G,Am,F」",
+    "quote": ""
   },
   {
     "name": "4156進行",
-    "description": "4156進行は「F,C,G,Am」"
+    "description": "4156進行は「F,C,G,Am」",
+    "quote": ""
   },
   {
     "name": "1625進行",
-    "description": "1625進行は「C,Am,Dm,G7」"
+    "description": "1625進行は「C,Am,Dm,G7」",
+    "quote": ""
   },
   {
     "name": "1541進行",
-    "description": "1541進行は「C,G,F,C」"
+    "description": "1541進行は「C,G,F,C」",
+    "quote": ""
   },
   {
     "name": "6251進行",
-    "description": "6251進行は「Am,Dm,G,C」"
+    "description": "6251進行は「Am,Dm,G,C」",
+    "quote": ""
   },
   {
     "name": "1345進行",
-    "description": "1345進行は「C,Em7,F,G7」"
+    "description": "1345進行は「C,Em7,F,G7」",
+    "quote": ""
   },
   {
     "name": "6345進行",
-    "description": "6345進行は「Am,Em,F,G」"
+    "description": "6345進行は「Am,Em,F,G」",
+    "quote": ""
   },
   {
     "name": "スリーコード",
-    "description": "スリーコードは「C,F,G」"
+    "description": "スリーコードは「C,F,G」",
+    "quote": ""
   },
   {
     "name": "カノン進行",
-    "description": "カノン進行は「C,G,Am,Em,F,C,F,G」"
+    "description": "カノン進行は「C,G,Am,Em,F,C,F,G」",
+    "quote": ""
   }
 ]

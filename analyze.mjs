@@ -18,7 +18,7 @@ for (let i = 0; i < 2; i++) {
       // 分析
       const resultData = chordAnalyze(data);
       // 配列に追加
-      if (resultData.result === true) {
+      if (resultData?.result === true) {
         // result が true のもののみ
         newAnalyzeData.push(resultData);
       }

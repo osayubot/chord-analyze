@@ -1,29 +1,49 @@
-import { Progression } from "@tonaljs/tonal";
+import { Chord, Progression } from "@tonaljs/tonal";
 import tensionChordCount from "./tension.mjs";
 import calcDistance from "./levanshtein.mjs";
-
 import specifyKey from "./key.mjs";
 import similarityCalc from "./distance.mjs";
 
 export default function analyze(data) {
-  // ライブラリで使える形に整える
-  const chord = data.chord.map((chord) =>
-    chord
+  // ライブラリで使える形に置き換え
+  const chord = data.chord.map((chord) => {
+    let newChord = chord
       .replace("♭", "b")
-      .replace("M", "m")
-      .replace("sus4", "")
-      .replace("dim", "")
+      .replace("maj7", "")
+      .replace("maj9", "")
+      .replace("-5", "")
+      .replace("-9", "")
+      .replace("-13", "")
       .replace("aug", "")
+      .replace("+5", "")
+      .replace("+9", "")
+      .replace("+11", "")
+      .replace("sus2", "")
+      .replace("sus4", "")
       .replace("add9", "")
-      .replace("add11", "")
-      .replace("add13", "")
       .replace("6", "")
       .replace("N.C.", "")
-      .replace("N.C", "")
-  );
+      .replace("N.C", "");
 
-  // テンションコードを見つける
-  const tensionChord = tensionChordCount(chord);
+    const dimIndex = newChord.indexOf("dim");
+    if (dimIndex > -1) {
+      // dimを代理コードで変換（引用：http://www.katmsp.com/2016/06/28/dairiko-do-ichiran/）
+      newChord = `${Chord.transpose(newChord.slice(0, dimIndex), "6m")}7`;
+    }
+    const minusIndex = newChord.indexOf("-"); // -5, -9, -13 以外の置き換え漏れ
+    if (minusIndex > -1) {
+      console.log(`${chord}（${data.id}:${data.song}）- found.`);
+      newChord = newChord.slice(0, minusIndex);
+    }
+    const plusIndex = newChord.indexOf("+"); // +5, +9, +11 以外の置き換え漏れ
+    if (plusIndex > -1) {
+      console.log(`${chord}（${data.id}:${data.song}）+ found.`);
+      newChord = newChord.slice(0, plusIndex);
+    }
+    return newChord;
+  });
+
+  const tensionChord = tensionChordCount(data.chord);
 
   let maxTotalPoint = 0;
   let analyzeResult = {};

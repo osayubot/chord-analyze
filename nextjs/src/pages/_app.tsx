@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
           />
           <meta
             name="viewport"
-            content="width=769,initial-scale=1,maximum-scale=1.0"
+            content="width=769,maximum-scale=1.0,user-scalable=yes"
           />
           <link rel="icon" href="/favicon.ico" />
           <meta property="og:url" content="https://chord-vis.vercel.app" />

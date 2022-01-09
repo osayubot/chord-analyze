@@ -7,7 +7,7 @@ import composer from "json/composer.json";
 import song from "json/song.json";
 import chord from "json/description/chord.json";
 
-export default function ChodName({
+export default function ChrodName({
   name,
   artistChordAsc,
   songChordAsc,
@@ -15,14 +15,19 @@ export default function ChodName({
 }) {
   const [type, setType] = useState<string>("楽曲");
 
-  const desctiption = chord.find((item) => item.name === name).description;
+  const { description, quote } = chord.find((item) => item.name === name);
+
+  const songChord = JSON.parse(songChordAsc);
+  const artistChord = JSON.parse(artistChordAsc);
+  const composerChord = JSON.parse(composerChordAsc);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.name}>{name}</h1>
       <br />
       <div className={styles.content}>
-        <p>{desctiption}</p>
+        <p>{description}</p>
+        <p>引用：{quote}</p>
       </div>
       <div className={styles.analyze}>
         <a
@@ -61,7 +66,7 @@ export default function ChodName({
       </div>
 
       {type === "楽曲" &&
-        JSON.parse(songChordAsc).map((data, index) => {
+        songChord.map((data, index) => {
           if (index < 100)
             return (
               <Link href={`/analyze/song/${data.id}`} key={index}>
@@ -72,7 +77,6 @@ export default function ChodName({
                       {data.song} / {data.artist}
                     </p>
                   </div>
-
                   <div className={styles.info}>
                     <h4>出現：</h4>
                     <span>{Number(data.chord[name]).toFixed(3)} %</span>
@@ -81,8 +85,15 @@ export default function ChodName({
               </Link>
             );
         })}
+      {type === "楽曲" && songChord.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
       {type === "アーティスト" &&
-        JSON.parse(artistChordAsc).map((data, index) => {
+        artistChord.map((data, index) => {
           if (index < 100)
             return (
               <Link href={`/analyze/artist/${data.id}`} key={index}>
@@ -100,8 +111,15 @@ export default function ChodName({
               </Link>
             );
         })}
+      {type === "アーティスト" && artistChord.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
       {type === "作曲者" &&
-        JSON.parse(composerChordAsc).map((data, index) => {
+        composerChord.map((data, index) => {
           if (index < 100)
             return (
               <Link href={`/analyze/composer/${data.id}`} key={index}>
@@ -119,6 +137,13 @@ export default function ChodName({
               </Link>
             );
         })}
+      {type === "作曲者" && composerChord.length === 0 && (
+        <a className={styles.about}>
+          <div className={styles.info}>
+            <h4>該当する{type}が見つかりませんでした</h4>
+          </div>
+        </a>
+      )}
     </div>
   );
 }
@@ -126,11 +151,16 @@ export default function ChodName({
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const name = params.name.toString();
 
+  let artistChordAsc = artist.filter((item) => item.chord[name] > 0);
+  let composerChordAsc = composer.filter((item) => item.chord[name] > 0);
+  let songChordAsc = song.filter((item) => item.chord[name] > 0);
+
   artist.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
   });
+  artistChordAsc = JSON.stringify(artistChordAsc);
 
   composer.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
@@ -138,18 +168,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return 0;
   });
 
+  composerChordAsc = JSON.stringify(composerChordAsc);
+
   song.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
   });
 
+  songChordAsc = JSON.stringify(songChordAsc);
+
   return {
     props: {
       name,
-      artistChordAsc: JSON.stringify(artist),
-      composerChordAsc: JSON.stringify(composer),
-      songChordAsc: JSON.stringify(song),
+      artistChordAsc,
+      composerChordAsc,
+      songChordAsc,
     },
   };
 };
