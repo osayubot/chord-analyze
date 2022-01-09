@@ -79,8 +79,8 @@ export default function TensionName({
                     </p>
                   </div>
                   <div className={styles.info}>
-                    <h4>出現回数：</h4>
-                    <span>{Number(data.tension[name]).toFixed(3)} 回</span>
+                    <h4>使用回数：</h4>
+                    <span>{Number(data.tension[name])} 回</span>
                   </div>
                 </a>
               </Link>
@@ -105,8 +105,8 @@ export default function TensionName({
                     <p>{data.artist}</p>
                   </div>
                   <div className={styles.info}>
-                    <h4>１曲あたりの平均出現回数：</h4>
-                    <span>{Number(data.tension[name]).toFixed(3)}回</span>
+                    <h4>１曲あたりの使用回数：</h4>
+                    <span>平均{Number(data.tension[name]).toFixed(3)}回</span>
                   </div>
                 </a>
               </Link>
@@ -131,8 +131,8 @@ export default function TensionName({
                     <p>{data.composer}</p>
                   </div>
                   <div className={styles.info}>
-                    <h4>１曲あたりの平均出現回数：</h4>
-                    <span>{Number(data.tension[name]).toFixed(3)}回</span>
+                    <h4>１曲あたりの使用回数：</h4>
+                    <span>平均{Number(data.tension[name]).toFixed(3)}回</span>
                   </div>
                 </a>
               </Link>

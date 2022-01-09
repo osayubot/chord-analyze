@@ -72,14 +72,14 @@ export default function composerId({ image, composerData }) {
     });
 
     chordAsc.sort(function (a, b) {
-      if (a.chordDif < b.chordDif) return -1;
-      if (a.chordDif > b.chordDif) return 1;
+      if (a.chordDif > b.chordDif) return -1;
+      if (a.chordDif < b.chordDif) return 1;
       return 0;
     });
 
     tensionAsc.sort(function (a, b) {
-      if (a.tensionDif < b.tensionDif) return -1;
-      if (a.tensionDif > b.tensionDif) return 1;
+      if (a.tensionDif > b.tensionDif) return -1;
+      if (a.tensionDif < b.tensionDif) return 1;
       return 0;
     });
 

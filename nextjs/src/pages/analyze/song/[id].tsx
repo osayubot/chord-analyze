@@ -77,14 +77,14 @@ export default function SongId({ image, songData }) {
     });
 
     chordAsc.sort(function (a, b) {
-      if (a.chordDif < b.chordDif) return -1;
-      if (a.chordDif > b.chordDif) return 1;
+      if (a.chordDif > b.chordDif) return -1;
+      if (a.chordDif < b.chordDif) return 1;
       return 0;
     });
 
     tensionAsc.sort(function (a, b) {
-      if (a.tensionDif < b.tensionDif) return -1;
-      if (a.tensionDif > b.tensionDif) return 1;
+      if (a.tensionDif > b.tensionDif) return -1;
+      if (a.tensionDif < b.tensionDif) return 1;
       return 0;
     });
     setMax({ tension: maxTension(), chord: maxChord() });
