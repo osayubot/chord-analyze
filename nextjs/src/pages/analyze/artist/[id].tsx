@@ -15,8 +15,10 @@ import {
 } from "lib/vis";
 import { Pie, Bar, HorizontalBar } from "react-chartjs-2";
 import artist from "json/artist.json";
+import { useRouter } from "next/router";
 
 export default function ArtistId({ image, artistData, network }) {
+  const router = useRouter();
   useEffect(() => {
     /* 一番使われているテンション */
     const maxTension = () => {
@@ -92,7 +94,7 @@ export default function ArtistId({ image, artistData, network }) {
     setMax({ tension: maxTension(), chord: maxChord() });
     setChordAsc(chordAsc);
     setTensionAsc(tensionAsc);
-  }, []);
+  }, [router]);
 
   const [max, setMax] = useState<{ tension: string; chord: string }>({
     tension: "",

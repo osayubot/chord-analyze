@@ -96,7 +96,7 @@ export default function SongId({ image, songData }) {
     setMax({ tension: maxTension(), chord: maxChord() });
     setChordAsc(chordAsc);
     setTensionAsc(tensionAsc);
-  }, []);
+  }, [router]);
 
   const [max, setMax] = useState<{ tension: string; chord: string }>({
     tension: "",
@@ -251,7 +251,7 @@ export default function SongId({ image, songData }) {
         <h4>分析結果</h4>
         <div className={styles.info}>
           <h6>調（キー）</h6>
-          <p>{songData.key.replace("b", "♭").replace("#","♯")}</p>
+          <p>{songData.key.replace("b", "♭").replace("#", "♯")}</p>
           <br />
           <h6>コード進行分析</h6>
           <p>
