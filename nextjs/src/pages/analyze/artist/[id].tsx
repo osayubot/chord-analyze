@@ -146,7 +146,7 @@ export default function ArtistId({ image, artistData, network }) {
     ],
   };
 
-  const generateSimilarArtistsPie = chordAsc.slice(0, 10).map((item: any) => {
+  const generateSimilarArtistsPie = chordAsc.slice(0, 20).map((item: any) => {
     const newPie = {
       labels: chordKeyArr,
       datasets: [
@@ -187,7 +187,7 @@ export default function ArtistId({ image, artistData, network }) {
     };
   });
 
-  const generateSimilarArtistsBar = tensionAsc.slice(0, 10).map((item: any) => {
+  const generateSimilarArtistsBar = tensionAsc.slice(0, 20).map((item: any) => {
     let newBar = {
       labels: tensionKeyArr,
       datasets: [

@@ -17,8 +17,8 @@ export default function Index() {
 
   const [hoverSongId, setHoverSongId] = useState<number>();
 
-  const [showChord, setShowChord] = useState<boolean>(false);
-  const [showTension, setShowTension] = useState<boolean>(false);
+  const [showChord, setShowChord] = useState<boolean>(true);
+  const [showTension, setShowTension] = useState<boolean>(true);
   const [showSong, setShowSong] = useState<boolean>(true);
   const [chordProgress, setChordProgress] = useState<string[]>([]);
   const [chordTension, setChordTension] = useState<string[]>([]);

@@ -146,7 +146,7 @@ export default function composerId({ image, composerData }) {
     ],
   };
 
-  const generateSimilarComposersPie = chordAsc.slice(0, 10).map((item: any) => {
+  const generateSimilarComposersPie = chordAsc.slice(0, 20).map((item: any) => {
     const newPie = {
       labels: chordKeyArr,
       datasets: [
@@ -188,7 +188,7 @@ export default function composerId({ image, composerData }) {
   });
 
   const generateSimilarComposersBar = tensionAsc
-    .slice(0, 10)
+    .slice(0, 20)
     .map((item: any) => {
       let newBar = {
         labels: tensionKeyArr,

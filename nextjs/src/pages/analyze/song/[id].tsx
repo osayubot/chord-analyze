@@ -148,7 +148,7 @@ export default function SongId({ image, songData }) {
     ],
   };
 
-  const generateSimilarSongsPie = chordAsc.slice(0, 10).map((item: any) => {
+  const generateSimilarSongsPie = chordAsc.slice(0, 20).map((item: any) => {
     const newPie = {
       labels: chordKeyArr,
       datasets: [
@@ -188,7 +188,7 @@ export default function SongId({ image, songData }) {
     };
   });
 
-  const generateSimilarSongsBar = tensionAsc.slice(0, 10).map((item: any) => {
+  const generateSimilarSongsBar = tensionAsc.slice(0, 20).map((item: any) => {
     let newBar = {
       labels: tensionKeyArr,
       datasets: [
