@@ -251,7 +251,7 @@ export default function SongId({ image, songData }) {
         <h4>分析結果</h4>
         <div className={styles.info}>
           <h6>調（キー）</h6>
-          <p>{songData.key.replace("b", "♭")}</p>
+          <p>{songData.key.replace("b", "♭").replace("#","♯")}</p>
           <br />
           <h6>コード進行分析</h6>
           <p>

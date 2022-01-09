@@ -79,7 +79,7 @@ export default function ChrodName({
                   </div>
                   <div className={styles.info}>
                     <h4>使用率：</h4>
-                    <span>{Number(data.chord[name]).toFixed(3)} %</span>
+                    <span>{Number(data.chord[name]).toFixed(1)} %</span>
                   </div>
                 </a>
               </Link>
@@ -105,7 +105,7 @@ export default function ChrodName({
 
                   <div className={styles.info}>
                     <h4>１曲あたりの使用率：</h4>
-                    <span>平均{Number(data.chord[name]).toFixed(3)}%</span>
+                    <span>平均{Number(data.chord[name]).toFixed(1)}%</span>
                   </div>
                 </a>
               </Link>
@@ -131,7 +131,7 @@ export default function ChrodName({
 
                   <div className={styles.info}>
                     <h4>１曲あたりの使用率：</h4>
-                    <span>平均{Number(data.chord[name]).toFixed(3)}%</span>
+                    <span>平均{Number(data.chord[name]).toFixed(1)}%</span>
                   </div>
                 </a>
               </Link>

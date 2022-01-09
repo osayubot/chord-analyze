@@ -106,7 +106,7 @@ export default function TensionName({
                   </div>
                   <div className={styles.info}>
                     <h4>１曲あたりの使用回数：</h4>
-                    <span>平均{Number(data.tension[name]).toFixed(3)}回</span>
+                    <span>平均{Number(data.tension[name]).toFixed(1)}回</span>
                   </div>
                 </a>
               </Link>
@@ -132,7 +132,7 @@ export default function TensionName({
                   </div>
                   <div className={styles.info}>
                     <h4>１曲あたりの使用回数：</h4>
-                    <span>平均{Number(data.tension[name]).toFixed(3)}回</span>
+                    <span>平均{Number(data.tension[name]).toFixed(1)}回</span>
                   </div>
                 </a>
               </Link>
