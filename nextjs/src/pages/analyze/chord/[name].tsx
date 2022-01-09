@@ -155,14 +155,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let composerChordAsc = composer.filter((item) => item.chord[name] > 0);
   let songChordAsc = song.filter((item) => item.chord[name] > 0);
 
-  artist.sort(function (a, b) {
+  artistChordAsc.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
   });
   artistChordAsc = JSON.stringify(artistChordAsc);
 
-  composer.sort(function (a, b) {
+  composerChordAsc.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
@@ -170,7 +170,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   composerChordAsc = JSON.stringify(composerChordAsc);
 
-  song.sort(function (a, b) {
+  songChordAsc.sort(function (a, b) {
     if (a.chord[name] > b.chord[name]) return -1;
     if (a.chord[name] < b.chord[name]) return 1;
     return 0;
