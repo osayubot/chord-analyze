@@ -288,7 +288,7 @@ export default function SongId({ image, songData }) {
         </div>
       </div>
       <div className={styles.footer}>
-        <h3>コード進行が似ているアーティスト</h3>
+        <h3>コード進行が似ている楽曲</h3>
         <ul>
           {generateSimilarSongsPie.map((item: any, index: number) => {
             return (
@@ -313,7 +313,7 @@ export default function SongId({ image, songData }) {
           })}
         </ul>
         <br />
-        <h3>テンションが似ているアーティスト</h3>
+        <h3>テンションが似ている楽曲</h3>
         <ul>
           {generateSimilarSongsBar.map((item: any, index: number) => {
             return (
