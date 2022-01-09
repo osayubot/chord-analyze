@@ -36,11 +36,13 @@
     position: absolute;
     display: flex;
     justify-content: center;
-    right: 2px;
-    top: 2px;
+    right: 0;
+    top: 0;
     border-radius: 0 8px 8px 0;
     background-color: $border;
-    height: calc(100% - 4px);
+    border: 2px solid $gray;
+    border-left: none;
+    height: 100%;
     width: 80px;
     cursor: pointer;
     opacity: 0.8;

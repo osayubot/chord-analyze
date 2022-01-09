@@ -65,7 +65,7 @@ input {
 
 input:focus {
   outline: none;
-  border: 2px solid rgba(black, 0.8);
+  border: 2px solid $gray;
 }
 
 textarea {
@@ -88,7 +88,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border: 2px solid rgba(black, 0.8);
+  border: 2px solid $gray;
 }
 
 header {

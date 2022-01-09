@@ -50,6 +50,7 @@ export default function Index() {
   }, [router]);
 
   const search = (value: string) => {
+    if (value.length === 0) return;
     const songResult = song.filter((item) => {
       return (
         item.song.indexOf(value) > -1 ||
