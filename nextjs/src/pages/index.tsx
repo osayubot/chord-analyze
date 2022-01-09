@@ -166,7 +166,7 @@ export default function Index() {
 
       <div className={styles.cardContainer}>
         <h3 className={styles.item} onClick={() => setShowChord(!showChord)}>
-          コード進行から探す&nbsp;
+          コード進行&nbsp;
           {showChord ? (
             <Image src="/chevron-up.svg" height="32" width="32" />
           ) : (
@@ -191,7 +191,7 @@ export default function Index() {
           className={styles.item}
           onClick={() => setShowTension(!showTension)}
         >
-          テンションから探す&nbsp;
+          テンション&nbsp;
           {showTension ? (
             <Image src="/chevron-up.svg" height="32" width="32" />
           ) : (
