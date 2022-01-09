@@ -23,7 +23,10 @@ export default function composerId({ image, composerData }) {
       let maxPoint = 0;
       let max = null;
       for (let key in composerData.tension) {
-        if (maxPoint < composerData.tension[key]) max = key;
+        if (maxPoint < composerData.tension[key]) {
+          max = key;
+          maxPoint = composerData.tension[key];
+        }
       }
       return max;
     };
@@ -34,7 +37,10 @@ export default function composerId({ image, composerData }) {
       let max = null;
       for (let key in composerData.chord) {
         if (key !== "その他の進行") {
-          if (maxPoint < composerData.chord[key]) max = key;
+          if (maxPoint < composerData.chord[key]) {
+            max = key;
+            maxPoint = composerData.chord[key];
+          }
         }
       }
       return max;
@@ -72,14 +78,14 @@ export default function composerId({ image, composerData }) {
     });
 
     chordAsc.sort(function (a, b) {
-      if (a.chordDif > b.chordDif) return -1;
-      if (a.chordDif < b.chordDif) return 1;
+      if (a.chordDif < b.chordDif) return -1;
+      if (a.chordDif > b.chordDif) return 1;
       return 0;
     });
 
     tensionAsc.sort(function (a, b) {
-      if (a.tensionDif > b.tensionDif) return -1;
-      if (a.tensionDif < b.tensionDif) return 1;
+      if (a.tensionDif < b.tensionDif) return -1;
+      if (a.tensionDif > b.tensionDif) return 1;
       return 0;
     });
 

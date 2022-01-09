@@ -23,7 +23,10 @@ export default function ArtistId({ image, artistData, network }) {
       let maxPoint = 0;
       let max = null;
       for (let key in artistData.tension) {
-        if (maxPoint < artistData.tension[key]) max = key;
+        if (maxPoint < artistData.tension[key]) {
+          max = key;
+          maxPoint = artistData.tension[key];
+        }
       }
       return max;
     };
@@ -34,7 +37,10 @@ export default function ArtistId({ image, artistData, network }) {
       let max = null;
       for (let key in artistData.chord) {
         if (key !== "その他の進行") {
-          if (maxPoint < artistData.chord[key]) max = key;
+          if (maxPoint < artistData.chord[key]) {
+            max = key;
+            maxPoint = artistData.chord[key];
+          }
         }
       }
       return max;
@@ -72,14 +78,14 @@ export default function ArtistId({ image, artistData, network }) {
     });
 
     chordAsc.sort(function (a, b) {
-      if (a.chordDif > b.chordDif) return -1;
-      if (a.chordDif < b.chordDif) return 1;
+      if (a.chordDif < b.chordDif) return -1;
+      if (a.chordDif > b.chordDif) return 1;
       return 0;
     });
 
     tensionAsc.sort(function (a, b) {
-      if (a.tensionDif > b.tensionDif) return -1;
-      if (a.tensionDif < b.tensionDif) return 1;
+      if (a.tensionDif < b.tensionDif) return -1;
+      if (a.tensionDif > b.tensionDif) return 1;
       return 0;
     });
 

@@ -29,7 +29,10 @@ export default function SongId({ image, songData }) {
       let maxPoint = 0;
       let max = null;
       for (let key in songData.tension) {
-        if (maxPoint < songData.tension[key]) max = key;
+        if (maxPoint < songData.tension[key]) {
+          max = key;
+          maxPoint = songData.tension[key];
+        }
       }
       return max;
     };
@@ -39,7 +42,10 @@ export default function SongId({ image, songData }) {
       let max = null;
       for (let key in songData.chord) {
         if (key !== "その他の進行") {
-          if (maxPoint < songData.chord[key]) max = key;
+          if (maxPoint < songData.chord[key]) {
+            max = key;
+            maxPoint = songData.chord[key];
+          }
         }
       }
       return max;
@@ -77,14 +83,14 @@ export default function SongId({ image, songData }) {
     });
 
     chordAsc.sort(function (a, b) {
-      if (a.chordDif > b.chordDif) return -1;
-      if (a.chordDif < b.chordDif) return 1;
+      if (a.chordDif < b.chordDif) return -1;
+      if (a.chordDif > b.chordDif) return 1;
       return 0;
     });
 
     tensionAsc.sort(function (a, b) {
-      if (a.tensionDif > b.tensionDif) return -1;
-      if (a.tensionDif < b.tensionDif) return 1;
+      if (a.tensionDif < b.tensionDif) return -1;
+      if (a.tensionDif > b.tensionDif) return 1;
       return 0;
     });
     setMax({ tension: maxTension(), chord: maxChord() });
@@ -245,7 +251,7 @@ export default function SongId({ image, songData }) {
         <h4>分析結果</h4>
         <div className={styles.info}>
           <h6>調（キー）</h6>
-          <p>{songData.key}</p>
+          <p>{songData.key.replace("b", "♭")}</p>
           <br />
           <h6>コード進行分析</h6>
           <p>
