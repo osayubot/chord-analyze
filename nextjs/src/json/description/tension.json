@@ -11,46 +11,47 @@
   },
   {
     "name": "dim",
-    "description": "【ディミニッシュコード】3和音マイナーコードの5度の音を半音下げた（減5度）音楽コードです。不安定な音が特徴です。（diminish=）",
+    "description": "【ディミニッシュコード】3和音マイナーコードの5度の音を半音下げた（減5度）音楽コードです。不安定な音が特徴です。",
     "quote": "N's Music Box，JunyaWatanabe Official Site"
   },
   {
+    "name": "add9",
+    "description": "【アドコード】3和音に長2度の音を加えたコードです。怪しげでかっこいい響きが特徴です。",
+    "quote": "音楽理論はいらない!?，JunyaWatanabe Official Site"
+  },
+  {
     "name": "6",
-    "description": "",
-    "quote": ""
+    "description": "【シックス】3和音に長6度の音を加えたコードです。少し気怠げな響きが特徴です。",
+    "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "(♭5)",
-    "description": "",
-    "quote": ""
+    "description": "3和音マイナーコードの完全5度を半音下げた（減5度）コードです。不安定な響きになります。",
+    "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "(♭9)",
-    "description": "",
-    "quote": ""
+    "description": "3和音マイナーコードの完全9度を半音下げた（減9度）コードです。",
+    "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "(♭13)",
-    "description": "",
-    "quote": ""
+    "description": "3和音マイナーコードの完全13度を半音下げた（減13度）コードです。",
+    "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "aug",
-    "description": "【オーギュメントコード】(#5)3和音メジャーコードの完全5度の音を半音上げた（増5度）音楽コードです。 ちょっと間の抜けたサウンドが特徴です。（aug=）",
+    "description": "【オーギュメントコード】3和音メジャーコードの完全5度の音を半音上げた（増5度）コードです。 ちょっと間の抜けたサウンドが特徴です。（aug=(#5)）",
     "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "(♯9)",
-    "description": "",
-    "quote": ""
+    "description": "3和音メジャーコードの完全9度の音を半音上げた（増5度）コードです。 ",
+    "quote": "JunyaWatanabe Official Site"
   },
   {
     "name": "(♯11)",
-    "description": "",
-    "quote": ""
-  },
-  {
-    "name": "add9",
-    "description": ""
+    "description": "3和音メジャーコードの完全11度の音を半音上げた（増5度）コードです。 ",
+    "quote": "JunyaWatanabe Official Site"
   }
 ]
