@@ -32,7 +32,7 @@ export default function TensionName({
 
       <div className={styles.analyze}>
         <a
-          className={styles.button}
+          className="button"
           onClick={() => {
             setType("楽曲");
           }}
@@ -41,7 +41,7 @@ export default function TensionName({
         </a>
         {"　"}
         <a
-          className={styles.button}
+          className="button"
           onClick={() => {
             setType("アーティスト");
           }}
@@ -50,7 +50,7 @@ export default function TensionName({
         </a>
         {"　"}
         <a
-          className={styles.button}
+          className="button"
           onClick={() => {
             setType("作曲者");
           }}

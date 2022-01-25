@@ -56,13 +56,13 @@ export default function SongId({ image, songData }) {
     let chordAsc = [];
     let tensionAsc = [];
     song.map((item) => {
-      // コードの距離を算出
+      // コードのユークリッド距離を算出
       let chordDif = 0;
       for (let key in item.chord) {
         const dif = songData.chord[key] - item.chord[key];
         chordDif += dif * dif;
       }
-      // テンションの距離を算出
+      // テンションのユークリッド距離を算出
       let tensionDif = 0;
       for (let key in item.tension) {
         const dif = songData.tension[key] - item.tension[key];
@@ -108,20 +108,32 @@ export default function SongId({ image, songData }) {
   const [loading, setLoading] = useState<boolean>(false);
 
   let total = 0;
+  let totalUseExtra = 0;
+
   chordKeyArr.map((key) => {
-    total = total + Number(songData.chord[key]);
+    if (key !== "その他の進行") {
+      total = total + Number(songData.chord[key]);
+    }
+    totalUseExtra = totalUseExtra + Number(songData.chord[key]);
   });
 
-  let horizontalBar = {
-    datasets: chordKeyArr.map((key, index) => {
-      const number = Number(songData.chord[key]);
-      return {
+  let datasets = [];
+  let datasetsUseExtra = [];
+  chordKeyArr.map((key, index) => {
+    const number = Number(songData.chord[key]);
+    if (key !== "その他の進行") {
+      datasets.push({
         label: key,
         data: [((number * 100) / total).toFixed(2)],
         backgroundColor: backgroundColor[index],
-      };
-    }),
-  };
+      });
+    }
+    datasetsUseExtra.push({
+      label: key,
+      data: [((number * 100) / totalUseExtra).toFixed(2)],
+      backgroundColor: backgroundColor[index],
+    });
+  });
 
   const pie = {
     labels: chordKeyArr,
@@ -161,28 +173,42 @@ export default function SongId({ image, songData }) {
         },
       ],
     };
+
     let total = 0;
+    let totalUseExtra = 0;
     chordKeyArr.map((key) => {
-      total = total + Number(songData.chord[key]);
+      if (key !== "その他の進行") {
+        total = total + Number(songData.chord[key]);
+      }
+      totalUseExtra = totalUseExtra + Number(songData.chord[key]);
     });
 
-    const newHorizonalBar = {
-      datasets: chordKeyArr.map((key, index) => {
-        const number = Number(songData.chord[key]);
-        return {
+    let datasets = [];
+    let datasetsUseExtra = [];
+    chordKeyArr.map((key, index) => {
+      const number = Number(songData.chord[key]);
+      if (key !== "その他の進行") {
+        datasets.push({
           label: key,
           data: [((number * 100) / total).toFixed(2)],
           backgroundColor: backgroundColor[index],
-        };
-      }),
-    };
+        });
+      }
+      datasetsUseExtra.push({
+        label: key,
+        data: [((number * 100) / totalUseExtra).toFixed(2)],
+        backgroundColor: backgroundColor[index],
+      });
+    });
+
     return {
       id: item.id,
       song: item.song,
       artist: item.artist,
       composer: item.composer,
       pie: newPie,
-      horizontalBar: newHorizonalBar,
+      horizontalBar: { datasets },
+      horizontalBarUseExtrra: { datasets: datasetsUseExtra },
       chordDif: item.chordDif,
       tensionDif: item.tensionDif,
     };
@@ -211,6 +237,8 @@ export default function SongId({ image, songData }) {
       tensionDif: item.tensionDif,
     };
   });
+
+  const [useExtraChord, setUseExtraChord] = useState<boolean>(false);
 
   return (
     <div className={styles.container}>
@@ -275,15 +303,23 @@ export default function SongId({ image, songData }) {
       <div className={styles.content}>
         <div className={styles.pie}>
           {/*<Pie data={pie} options={pieOptions as any} />*/}
-          <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
+          <HorizontalBar
+            data={
+              !useExtraChord ? { datasets } : { datasets: datasetsUseExtra }
+            }
+            options={horizonalBarOption}
+          />
         </div>
+        <a className="button" onClick={() => setUseExtraChord(!useExtraChord)}>
+          その他の進行を{!useExtraChord ? "含まない" : "含む"}
+        </a>
       </div>
       <div className={styles.analyze}>
         <h2>テンション分析</h2>
         <p>曲中でのテンション使用回数を表示しています</p>
         <div className={styles.content}>
           <div className={styles.pie}>
-            <Bar data={bar} options={barOptions} />
+            <HorizontalBar data={bar} options={barOptions} />
           </div>
         </div>
       </div>
@@ -323,7 +359,10 @@ export default function SongId({ image, songData }) {
                     <h4 className={styles.name}>{item.song}</h4>
                     <br />
 
-                    <Bar data={item.bar} options={barOptions as any} />
+                    <HorizontalBar
+                      data={item.bar}
+                      options={barOptions as any}
+                    />
                     <p className={styles.type}>
                       {item.artist} / {item.composer}
                     </p>
@@ -352,9 +391,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   const json = await res.json();
 
-  const image = json.results
+  let image = json.results
     ? json.results[0]?.artworkUrl100?.toString().replace("100x100", "500x500")
     : "/noimage.png";
+
+  if (image.indexOf("-ssl.mzstatic.com") === -1) {
+    image = "/noimage.png";
+  }
 
   return {
     props: {

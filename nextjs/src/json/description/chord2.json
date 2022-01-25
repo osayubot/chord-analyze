@@ -17,7 +17,7 @@
   {
     "name": "小室マイナー進行",
     "description": "小室マイナー進行「Am,Dm,G,Am」\n小室哲哉さんが多用していることから名前がつきました。哀愁漂う切ない雰囲気を醸し出します。",
-    "quote": "DATT.MUSIC, CHORD MASTER"
+    "quote": "DATT.MUSIC,CHORD MASTER"
   },
   {
     "name": "LetItBe進行",
@@ -26,18 +26,8 @@
   },
   {
     "name": "4156進行",
-    "description": "4156進行「F,C,G,Am」\nLetItBe進行（1564進行）の派生とも言われ、少しおしゃれな感じがするコード進行です。",
+    "description": "4156進行「F,C,G,Am」\nLetItBe進行（1546進行）の派生とも言われ、少しおしゃれな感じがするコード進行です。",
     "quote": "DATT.MUSIC"
-  },
-  {
-    "name": "6415進行",
-    "description": "4156進行「F,C,G,Am」\nLetItBe進行（1564進行）の派生とも言われ、少しおしゃれな感じがするコード進行です。",
-    "quote": "DATT.MUSIC"
-  },
-  {
-    "name": "1451進行",
-    "description": "1451進行「C,F,G,C」\n緊張感と安心感がバランスよく自然でスムーズな形で展開されているコード進行です。",
-    "quote": "ソノオト"
   },
   {
     "name": "1625進行",
@@ -45,8 +35,28 @@
     "quote": "glassy, 作曲日和"
   },
   {
+    "name": "1541進行",
+    "description": "1541進行「C,G,F,C」",
+    "quote": ""
+  },
+  {
+    "name": "6251進行",
+    "description": "6251進行「Am,Dm,G,C」",
+    "quote": ""
+  },
+  {
+    "name": "1345進行",
+    "description": "1345進行「C,Em7,F,G7」",
+    "quote": ""
+  },
+  {
+    "name": "6345進行",
+    "description": "6345進行「Am,Em,F,G」",
+    "quote": ""
+  },
+  {
     "name": "スリーコード",
-    "description": "スリーコード「C,F,G」\n長調における３和音のダイアトニックコードの中で、特に重要なコードC、F、Gを用いた進行です。",
+    "description": "スリーコード「C,F,G」\n長調における３和音のダイアトニックコードの中で、特に重要なコードC、F、Gを用いた進行です",
     "quote": "meloko"
   },
   {

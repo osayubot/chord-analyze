@@ -56,8 +56,10 @@ export default function composerId({ image, composerData }) {
       // コードの距離を算出
       let chordDif = 0;
       for (let key in item.chord) {
-        const dif = composerData.chord[key] - item.chord[key];
-        chordDif += dif * dif;
+        if (composerData.chord[key] !== "その他の進行") {
+          const dif = composerData.chord[key] - item.chord[key];
+          chordDif += dif * dif;
+        }
       }
       // テンションの距離を算出
       let tensionDif = 0;
@@ -107,20 +109,33 @@ export default function composerId({ image, composerData }) {
   const tensionKeyArr = Object.keys(composerData.tension);
 
   let total = 0;
+  let totalUseExtra = 0;
   chordKeyArr.map((key) => {
-    total = total + Number(composerData.chord[key]);
+    if (key !== "その他の進行") {
+      total = total + Number(composerData.chord[key]);
+    }
+    totalUseExtra = totalUseExtra + Number(composerData.chord[key]);
   });
 
-  const horizontalBar = {
-    datasets: chordKeyArr.map((key, index) => {
-      const number = Number(composerData.chord[key]);
-      return {
+  let datasets = [];
+  let datasetsUseExtra = [];
+  chordKeyArr.map((key, index) => {
+    const number = Number(composerData.chord[key]);
+    if (key !== "その他の進行") {
+      datasets.push({
         label: key,
         data: [((number * 100) / total).toFixed(2)],
         backgroundColor: backgroundColor[index],
-      };
-    }),
-  };
+      });
+    }
+    datasetsUseExtra.push({
+      label: key,
+      data: [((number * 100) / totalUseExtra).toFixed(2)],
+      backgroundColor: backgroundColor[index],
+    });
+  });
+
+  const horizontalBar = { datasets };
 
   const pie = {
     labels: chordKeyArr,
@@ -163,27 +178,40 @@ export default function composerId({ image, composerData }) {
     };
 
     let total = 0;
+    let totalUseExtra = 0;
     chordKeyArr.map((key) => {
-      total = total + Number(composerData.chord[key]);
+      if (key !== "その他の進行") {
+        total = total + Number(composerData.chord[key]);
+      }
+      totalUseExtra = totalUseExtra + Number(composerData.chord[key]);
     });
 
-    const newHorizonalBar = {
-      datasets: chordKeyArr.map((key, index) => {
-        const number = Number(composerData.chord[key]);
-        return {
-          label: key,
-          data: [((number * 100) / total).toFixed(2)],
-          backgroundColor: backgroundColor[index],
-        };
-      }),
-    };
+    let datasets = [];
+    let datasetsUseExtra = [];
+    chordKeyArr.map((key, index) => {
+      const number = Number(composerData.chord[key]);
+
+      datasets.push({
+        label: key,
+        data: [((number * 100) / total).toFixed(2)],
+        backgroundColor: backgroundColor[index],
+      });
+
+      datasetsUseExtra.push({
+        label: key,
+        data: [((number * 100) / totalUseExtra).toFixed(2)],
+        backgroundColor: backgroundColor[index],
+      });
+    });
+
     return {
       id: item.id,
       song: item.song,
       artist: item.artist,
       composer: item.composer,
       pie: newPie,
-      horizontalBar: newHorizonalBar,
+      horizontalBar: { datasets },
+      horizontalBarUseExtrra: { datasets: datasetsUseExtra },
       chordDif: item.chordDif,
       tensionDif: item.tensionDif,
     };
@@ -214,6 +242,8 @@ export default function composerId({ image, composerData }) {
         tensionDif: item.tensionDif,
       };
     });
+
+  const [useExtraChord, setUseExtraChord] = useState<boolean>(false);
 
   return (
     <div className={styles.container}>
@@ -265,8 +295,16 @@ export default function composerId({ image, composerData }) {
       <div className={styles.content}>
         <div className={styles.pie}>
           {/*<Pie data={pie} options={pieOptions as any} />*/}
-          <HorizontalBar data={horizontalBar} options={horizonalBarOption} />
+          <HorizontalBar
+            data={
+              !useExtraChord ? { datasets } : { datasets: datasetsUseExtra }
+            }
+            options={horizonalBarOption}
+          />
         </div>
+        <a className="button" onClick={() => setUseExtraChord(!useExtraChord)}>
+          その他の進行を{!useExtraChord ? "含まない" : "含む"}
+        </a>
       </div>
 
       <br />
@@ -278,7 +316,7 @@ export default function composerId({ image, composerData }) {
       </div>
       <div className={styles.content}>
         <div className={styles.pie}>
-          <Bar data={bar} options={barOptions as any} />
+          <HorizontalBar data={bar} options={barOptions as any} />
         </div>
       </div>
 
@@ -315,7 +353,10 @@ export default function composerId({ image, composerData }) {
                   <a className={styles.card}>
                     <h4 className={styles.name}>{item.composer}</h4>
                     <br />
-                    <Bar data={item.bar} options={barOptions as any} />
+                    <HorizontalBar
+                      data={item.bar}
+                      options={barOptions as any}
+                    />
                     <br />
                     <p>dif:{item.tensionDif.toFixed(2)}</p>
                   </a>
@@ -352,6 +393,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const cutJsonStr = jsonStr.slice(startIndex - 12, startIndex + 250);
     const lastIndex = cutJsonStr.indexOf("1200x630");
     image = cutJsonStr.slice(0, lastIndex + 14);
+  }
+
+  if (image.indexOf("-ssl.mzstatic.com") === -1) {
+    image = "/noimage1200x630.png";
   }
 
   return {

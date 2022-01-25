@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import styles from "styles/Index.module.scss";
 import { Scatter } from "react-chartjs-2";
 import mds from "json/mds.json";
+import mds_extra_other from "json/mds_extra_other.json";
 import song from "json/song.json";
 import chord from "json/description/chord.json";
 import tension from "json/description/tension.json";
@@ -13,7 +14,7 @@ export default function Index() {
   const router = useRouter();
   const [searchSongResult, setSearchSongResult] = useState(song);
   const [value, setValue] = useState<string>("");
-  const [guide, setGuide] = useState<string>("検索しよう");
+  const [guide, setGuide] = useState<string>("");
 
   const [hoverSongId, setHoverSongId] = useState<number>();
 
@@ -23,12 +24,22 @@ export default function Index() {
   const [chordProgress, setChordProgress] = useState<string[]>([]);
   const [chordTension, setChordTension] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showIncludeOther, setShowIncludeOther] = useState<boolean>(false);
 
   const defaultDataset = {
     datasets: [
       {
         label: "matched",
         data: [...mds],
+        backgroundColor: "rgba(53, 162, 235, 1)",
+      },
+    ],
+  };
+  const defaultDataset2 = {
+    datasets: [
+      {
+        label: "matched",
+        data: [...mds_extra_other],
         backgroundColor: "rgba(53, 162, 235, 1)",
       },
     ],
@@ -41,6 +52,14 @@ export default function Index() {
       backgroundColor: string;
     }[];
   }>(defaultDataset);
+
+  const [datasets2, setDatasets2] = useState<{
+    datasets: {
+      label: string;
+      data: { x: number; y: number; label: string; id: number }[];
+      backgroundColor: string;
+    }[];
+  }>(defaultDataset2);
 
   useEffect(() => {
     const chordProgress = chord.map(({ name }) => name);
@@ -69,6 +88,16 @@ export default function Index() {
       return notMatchedData.push(item);
     });
 
+    const matchedData2 = [];
+    const notMatchedData2 = [];
+
+    defaultDataset2.datasets[0].data.map((item) => {
+      if (item.label.indexOf(value) > -1) {
+        return matchedData2.push(item);
+      }
+      return notMatchedData2.push(item);
+    });
+
     setSearchSongResult(songResult);
     setDatasets({
       datasets: [
@@ -80,6 +109,20 @@ export default function Index() {
         {
           label: "notMatched",
           data: notMatchedData,
+          backgroundColor: "rgba(0, 0, 0, 0.1)",
+        },
+      ],
+    });
+    setDatasets2({
+      datasets: [
+        {
+          label: "matched",
+          data: matchedData2,
+          backgroundColor: "rgba(255, 99, 132, 1)",
+        },
+        {
+          label: "notMatched",
+          data: notMatchedData2,
           backgroundColor: "rgba(0, 0, 0, 0.1)",
         },
       ],
@@ -111,9 +154,7 @@ export default function Index() {
         <Scatter
           data={datasets}
           options={{
-            elements: {
-              point: { radius: 2 },
-            },
+            elements: { point: { radius: 2 } },
             onClick: () => {
               if (hoverSongId) {
                 router.push(`/analyze/song/${hoverSongId}`);
@@ -132,12 +173,49 @@ export default function Index() {
                 },
               },
             },
-            parsing: {
-              label: "label",
-            },
+            parsing: { label: "label" },
           }}
         />
       </div>
+      <h5 className={styles.advice}>
+        ↑ 検索で一致した項目が散布図上で赤く表示されます
+      </h5>
+
+      {showIncludeOther && (
+        <div className={styles.cardContainer}>
+          <Scatter
+            data={datasets2}
+            options={{
+              elements: { point: { radius: 2 } },
+              legend: { display: false },
+              onClick: () => {
+                if (hoverSongId) {
+                  router.push(`/analyze/song/${hoverSongId}`);
+                }
+              },
+              tooltips: {
+                callbacks: {
+                  label: (tooltipItem, data) => {
+                    const datasetIndex = tooltipItem.datasetIndex;
+                    const index = tooltipItem.index;
+                    var labelObj = data.datasets[datasetIndex].data[index];
+                    // if (context.dataset.label !== "notMatched") {return "";}
+                    setHoverSongId(labelObj.id);
+                    return labelObj?.label ? labelObj.label : "";
+                  },
+                },
+              },
+              parsing: { label: "label" },
+            }}
+          />
+        </div>
+      )}
+      <a
+        className="button"
+        onClick={() => setShowIncludeOther(!showIncludeOther)}
+      >
+        {!showIncludeOther ? "その他のコードを含めた結果" : "閉じる"}
+      </a>
 
       <h2 className={styles.guide}>{guide}</h2>
 
@@ -223,34 +301,23 @@ export default function Index() {
 
         {showSong &&
           searchSongResult.map((item, index) => {
-            if (item.result === true) {
-              // 　分析が成功しているものはクリック可能
-              return (
-                <Link href={`/analyze/song/${item.id}`} key={index}>
-                  <a
-                    className={styles.card}
-                    onClick={() => {
-                      setLoading(true);
-                      setTimeout(() => setLoading(false), 10000);
-                    }}
-                  >
-                    <h2>{item.song}</h2>
-                    <h5>
-                      {item.artist} / {item.composer}
-                    </h5>
-                    <h5>楽曲</h5>
-                  </a>
-                </Link>
-              );
-            }
+            // 　分析が成功しているものはクリック可能
             return (
-              <span className={`${styles.card} ${styles.disabled}`}>
-                <h2>{item.song}</h2>
-                <h5>
-                  {item.artist} / {item.composer}
-                </h5>
-                <h5>楽曲</h5>
-              </span>
+              <Link href={`/analyze/song/${item.id}`} key={index}>
+                <a
+                  className={styles.card}
+                  onClick={() => {
+                    setLoading(true);
+                    setTimeout(() => setLoading(false), 10000);
+                  }}
+                >
+                  <h2>{item.song}</h2>
+                  <h5>
+                    {item.artist} / {item.composer}
+                  </h5>
+                  <h5>楽曲</h5>
+                </a>
+              </Link>
             );
           })}
         {showSong && searchSongResult.length === 0 && (

@@ -129,7 +129,7 @@ export default function Analyze({ about }) {
                 }}
               />
               <h6 className={styles.alert}>{alert}</h6>
-              <a className={styles.button} onClick={() => sendComment()}>
+              <a className="button" onClick={() => sendComment()}>
                 書き込む
               </a>
             </div>
